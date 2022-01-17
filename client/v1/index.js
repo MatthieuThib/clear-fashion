@@ -30,7 +30,7 @@ console.log(MY_FAVORITE_BRANDS[0]);
 // 0. I have 3 favorite brands stored in MY_FAVORITE_BRANDS variable
 // 1. Create a new variable and assign it the link of the cheapest t-shirt
 // I can find on these e-shops
-const cheapestTshirt = MY_FAVORITE_BRANDS[0].url;
+const cheapestTshirt = 'https://adresse.paris/t-shirts-et-polos/3983-t-shirt-ranelagh-1300000259194.html'
 // 2. Log the variable
 console.log(cheapestTshirt);
 
@@ -45,17 +45,27 @@ console.log(cheapestTshirt);
 
 // 🎯 TODO: Number of products
 // 1. Create a variable and assign it the number of products
+var n = marketplace.length;
 // 2. Log the variable
-console.log(marketplace.length);
+console.log(n)
+
 
 // 🎯 TODO: Brands name
 // 1. Create a variable and assign it the list of brands name only
+var brands = []
+for (let i = 0; i < marketplace.length; i++){
+  brands.push(marketplace[i].brand);
+}
+
 // 2. Log the variable
+console.log(brands);
 // 3. Log how many brands we have
+console.log(brands.length)
 
 
 // 🎯 TODO: Sort by price
 // 1. Create a function to sort the marketplace products by price
+
 // 2. Create a variable and assign it the list of products by price from lowest to highest
 // 3. Log the variable
 
