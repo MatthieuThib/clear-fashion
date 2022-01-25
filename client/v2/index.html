@@ -20,18 +20,25 @@
         <select name="page" id="page-select"> </select>
       </div>
       <div id="filters">
-        <span>By reasonable price</span>
-        <span>By recently released</span>
+        <!-- <span>By reasonable price</span> -->
+        <!-- <span>By recently released</span> -->
+        <div id="recentProducts">
+          <label for="recentProducts-select"> Recent Products:</label>
+          <select name="recentProducts" id="recentProducts-select"></select>
+        </div>
+        <div id="reasonablePrice">
+          <label for="reasonablePrice-select">Reasonable Price:</label>
+          <select name="reasonablePrice" id="reasonablePrice-select"></select>
+        </div>
         <div id="brand">
           <label for="brand-select">By brands:</label>
-          <select name="brand" id="brand-select">
-            <option value="All">All</option>
-          </select>
+          <select name="brand" id="brand-select"></select>
         </div>
       </div>
       <div id="sort">
         <label for="sort-select">Sort:</label>
         <select name="sort" id="sort-select">
+          <option value="No" selected>No</option>
           <option value="price-asc">Cheaper</option>
           <option value="price-desc">Expensive</option>
           <option value="date-asc">Recently released</option>
