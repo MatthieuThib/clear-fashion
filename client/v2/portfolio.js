@@ -33,6 +33,7 @@ const fetchProducts = async (page = 1, size = 12) => {
     const response = await fetch(
       `https://clear-fashion-api.vercel.app?page=${page}&size=${size}`
     );
+
     const body = await response.json();
 
     if (body.success !== true) {
@@ -41,6 +42,7 @@ const fetchProducts = async (page = 1, size = 12) => {
     }
 
     return body.data;
+
   } catch (error) {
     console.error(error);
     return {currentProducts, currentPagination};
@@ -104,6 +106,9 @@ const render = (products, pagination) => {
   renderIndicators(pagination);
 };
 
+
+
+
 /**
  * Declaration of all Listeners
  */
@@ -112,31 +117,38 @@ const render = (products, pagination) => {
  * Select the number of products to display
  * @type {[type]}
  */
- selectShow.addEventListener('change', event => {
+
+// SELECT PAGE SIZE
+selectShow.addEventListener('change', event => {
   currentPagination.pageSize = parseInt(event.target.value);
   fetchProducts(currentPagination.currentPage, currentPagination.pageSize)
     .then(setCurrentProducts)
-    .then(() => render(currentProducts, currentPagination))
-    //.then(() => console.log(currentProducts))
-    .then(() => console.log(getDisplayedBrands(currentProducts)))
-    .then(addBrandsInSelectBox(getDisplayedBrands(currentProducts)));
+    .then(() => addBrandsInSelectBox(getDisplayedBrands()))
+    .then(() => render(currentProducts, currentPagination));
 });
 
+// SELECT PAGE NUMBER
 selectPage.addEventListener('change', event => {
   currentPagination.currentPage = parseInt(event.target.value);
   fetchProducts(currentPagination.currentPage, currentPagination.pageSize)
-  .then(setCurrentProducts)
-  .then(() => render(currentProducts, currentPagination));
+    .then(setCurrentProducts)
+    .then(() => addBrandsInSelectBox(getDisplayedBrands()))
+    .then(() => render(currentProducts, currentPagination));
 });
 
+// SELECT BRAND FILTER
 selectBrand.addEventListener('change', event => {
   var brand = event.target.value;
-  console.log('products', currentProducts);
+  //console.log(brand);
+  //console.log('products', currentProducts);
   currentProducts = filterByBrand(brand, currentProducts);
-  console.log('filtered products', currentProducts);
-
-  render(currentProducts, currentPagination);
+  //console.log('filtered products', currentProducts);
+  fetchProducts(currentPagination.currentPage, currentPagination.pageSize)
+    .then(setCurrentProducts)
+    .then(() => currentProducts = currentProducts.filter(element => element.brand === brand))
+    .then(() => render(currentProducts, currentPagination));
 });
+
 
 document.addEventListener('DOMContentLoaded', () =>
   fetchProducts()
@@ -144,10 +156,7 @@ document.addEventListener('DOMContentLoaded', () =>
     .then(() => render(currentProducts, currentPagination))
 );
 
-function updateDisplay(currentProducts, currentPagination){
-  
 
-}
 
 
 
@@ -155,36 +164,30 @@ function updateDisplay(currentProducts, currentPagination){
 
 // get brands currently displayed
 // return list of that brands
-const getDisplayedBrands = (currentProducts) => {
-  return [...new Set(currentProducts.map (obj => obj.brand))];
-  };
-
-  /*
-const emptySelectBox = (selectBoxId) => {
-  var selectBox = document.getElementById('brand-select');
-  selectBox.options.
-}
-sel.removeChild( sel.options[1] );*/
+const getDisplayedBrands = () => {
+  return [...new Set(currentProducts.map (obj => obj.brand))]; };
 
 
 // add brands currently displayed as option in By brands selectbox
 const addBrandsInSelectBox = (brands) => {
   var selectBox = document.getElementById('brand-select');
-  //selectBox.options.length = 0;
+  selectBox.options.length = 0;
+  selectBox.options.add(new Option("No filter", "noFilter", false));
+
   brands.forEach(brand => {
     var opt = document.createElement('option');
     opt.appendChild(document.createTextNode(brand));
     opt.value = brand; 
     selectBox.appendChild(opt)
   });
+
 }
+
+
 
 // filter current product depending on the brand name parameter
 const filterByBrand = (brandName, currentProducts) => {
   return currentProducts.filter(element => element.brand === brandName);
 }
-
-
-
 
 
