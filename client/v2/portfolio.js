@@ -139,16 +139,11 @@ selectPage.addEventListener('change', event => {
 // SELECT BRAND FILTER
 selectBrand.addEventListener('change', event => {
   var brand = event.target.value;
-  //console.log(brand);
-  //console.log('products', currentProducts);
-  currentProducts = filterByBrand(brand, currentProducts);
-  //console.log('filtered products', currentProducts);
   fetchProducts(currentPagination.currentPage, currentPagination.pageSize)
     .then(setCurrentProducts)
     .then(() => currentProducts = currentProducts.filter(element => element.brand === brand))
     .then(() => render(currentProducts, currentPagination));
 });
-
 
 document.addEventListener('DOMContentLoaded', () =>
   fetchProducts()
@@ -160,19 +155,21 @@ document.addEventListener('DOMContentLoaded', () =>
 
 
 
-// FEATURE 1: 
+// Feature 1 - Browse pages
+
+
+// Feature 2 - Filter by brands
 
 // get brands currently displayed
 // return list of that brands
 const getDisplayedBrands = () => {
   return [...new Set(currentProducts.map (obj => obj.brand))]; };
 
-
 // add brands currently displayed as option in By brands selectbox
 const addBrandsInSelectBox = (brands) => {
   var selectBox = document.getElementById('brand-select');
   selectBox.options.length = 0;
-  selectBox.options.add(new Option("No filter", "noFilter", false));
+  selectBox.options.add(new Option("All", "All", false));
 
   brands.forEach(brand => {
     var opt = document.createElement('option');
@@ -184,10 +181,5 @@ const addBrandsInSelectBox = (brands) => {
 }
 
 
-
-// filter current product depending on the brand name parameter
-const filterByBrand = (brandName, currentProducts) => {
-  return currentProducts.filter(element => element.brand === brandName);
-}
-
+//Feature 3 - Filter by recent products
 
