@@ -8,6 +8,7 @@ let currentPagination = {};
 // inititiqte selectors
 const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
+const selectBrand = document.querySelector('#brand-select');
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 
@@ -86,6 +87,7 @@ const renderPagination = pagination => {
   selectPage.selectedIndex = currentPage - 1;
 };
 
+
 /**
  * Render page selector
  * @param  {Object} pagination
@@ -110,10 +112,30 @@ const render = (products, pagination) => {
  * Select the number of products to display
  * @type {[type]}
  */
-selectShow.addEventListener('change', event => {
-  fetchProducts(currentPagination.currentPage, parseInt(event.target.value))
+ selectShow.addEventListener('change', event => {
+  currentPagination.pageSize = parseInt(event.target.value);
+  fetchProducts(currentPagination.currentPage, currentPagination.pageSize)
     .then(setCurrentProducts)
-    .then(() => render(currentProducts, currentPagination));
+    .then(() => render(currentProducts, currentPagination))
+    //.then(() => console.log(currentProducts))
+    .then(() => console.log(getDisplayedBrands(currentProducts)))
+    .then(addBrandsInSelectBox(getDisplayedBrands(currentProducts)));
+});
+
+selectPage.addEventListener('change', event => {
+  currentPagination.currentPage = parseInt(event.target.value);
+  fetchProducts(currentPagination.currentPage, currentPagination.pageSize)
+  .then(setCurrentProducts)
+  .then(() => render(currentProducts, currentPagination));
+});
+
+selectBrand.addEventListener('change', event => {
+  var brand = event.target.value;
+  console.log('products', currentProducts);
+  currentProducts = filterByBrand(brand, currentProducts);
+  console.log('filtered products', currentProducts);
+
+  render(currentProducts, currentPagination);
 });
 
 document.addEventListener('DOMContentLoaded', () =>
@@ -121,3 +143,48 @@ document.addEventListener('DOMContentLoaded', () =>
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination))
 );
+
+function updateDisplay(currentProducts, currentPagination){
+  
+
+}
+
+
+
+// FEATURE 1: 
+
+// get brands currently displayed
+// return list of that brands
+const getDisplayedBrands = (currentProducts) => {
+  return [...new Set(currentProducts.map (obj => obj.brand))];
+  };
+
+  /*
+const emptySelectBox = (selectBoxId) => {
+  var selectBox = document.getElementById('brand-select');
+  selectBox.options.
+}
+sel.removeChild( sel.options[1] );*/
+
+
+// add brands currently displayed as option in By brands selectbox
+const addBrandsInSelectBox = (brands) => {
+  var selectBox = document.getElementById('brand-select');
+  //selectBox.options.length = 0;
+  brands.forEach(brand => {
+    var opt = document.createElement('option');
+    opt.appendChild(document.createTextNode(brand));
+    opt.value = brand; 
+    selectBox.appendChild(opt)
+  });
+}
+
+// filter current product depending on the brand name parameter
+const filterByBrand = (brandName, currentProducts) => {
+  return currentProducts.filter(element => element.brand === brandName);
+}
+
+
+
+
+

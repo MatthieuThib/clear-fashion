@@ -96,9 +96,9 @@ var filteredByPrice_marketplace = marketplace.filter(filterPrices);
 // 2. Log the list
 console.log(filteredByPrice_marketplace)
 
-// 🎯 TODO: Average Basket
-console.log('\nTODO: Average Basket');
-// 1. Determine the average basket of the marketplace
+// 🎯 TODO: Average price
+console.log('\nTODO: Average price');
+// 1. Determine the average price of the marketplace
 var avgBasket = 0;
 for (let i = 0; i < marketplace.length; i++){
   avgBasket += marketplace[i].price;
