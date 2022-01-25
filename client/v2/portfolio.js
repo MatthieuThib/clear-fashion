@@ -5,6 +5,12 @@
 let currentProducts = [];
 let currentPagination = {};
 
+// elements by default
+var brand = "All";
+var filterReasonablePrice = "Off";
+var filterRecentProducts = "Off";
+var sort = 'No';
+
 // inititiqte selectors
 const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
@@ -150,15 +156,20 @@ selectBrand.addEventListener('change', event => {
     })
     .then(() => render(currentProducts, currentPagination));
 });
-
+ 
 // SELECT RECENTLY RELEASED PRODUCTS 
 selectRecentProducts.addEventListener('change', event => {
   var filterRecentProducts = event.target.value;
   fetchProducts(currentPagination.currentPage, currentPagination.pageSize)
     .then(setCurrentProducts)
-    .then(() => { if(filterRecentProducts === 'On') {
-      currentProducts = currentProducts.filter(element => (new Date().getTime() - new Date(element.released).getTime())/(24*60*60*1000) < 14)} 
-    })
+    .then(() => addBrandsInSelectBox(getDisplayedBrands()))
+    .then(() => { if (brand !== 'All') {currentProducts = currentProducts.filter(element => element.brand === brand)} })
+    .then(() => { if(filterRecentProducts === 'On') { currentProducts = currentProducts.filter(element => (new Date().getTime() - new Date(element.released).getTime())/(24*60*60*1000) < 14)} })
+    .then(() => { if(filterReasonablePrice === 'On') { currentProducts = currentProducts.filter(element => element.price < 50)} })
+    .then(() => { if (sort === 'price-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price < e2.price}) }
+             else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
+             else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
+             else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
     .then(() => render(currentProducts, currentPagination));
 });
 
@@ -167,24 +178,30 @@ selectReasonablePrice.addEventListener('change', event => {
   var filterReasonablePrice = event.target.value;
   fetchProducts(currentPagination.currentPage, currentPagination.pageSize)
     .then(setCurrentProducts)
-    .then(() => { if(filterReasonablePrice === 'On') {
-      currentProducts = currentProducts.filter(element => element.price < 50)} 
-    })
+    .then(() => addBrandsInSelectBox(getDisplayedBrands()))
+    .then(() => { if (brand !== 'All') {currentProducts = currentProducts.filter(element => element.brand === brand)} })
+    .then(() => { if(filterRecentProducts === 'On') { currentProducts = currentProducts.filter(element => (new Date().getTime() - new Date(element.released).getTime())/(24*60*60*1000) < 14)} })
+    .then(() => { if(filterReasonablePrice === 'On') { currentProducts = currentProducts.filter(element => element.price < 50)} })
+    .then(() => { if (sort === 'price-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price < e2.price}) }
+             else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
+             else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
+             else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
     .then(() => render(currentProducts, currentPagination));
 });
 
 // SELECT SORT  FILTER
 selectSort.addEventListener('change', event => {
   var sort = event.target.value;
-  console.log(sort);
   fetchProducts(currentPagination.currentPage, currentPagination.pageSize)
     .then(setCurrentProducts)
+    .then(() => addBrandsInSelectBox(getDisplayedBrands()))
+    .then(() => { if (brand !== 'All') {currentProducts = currentProducts.filter(element => element.brand === brand)} })
+    .then(() => { if(filterRecentProducts === 'On') { currentProducts = currentProducts.filter(element => (new Date().getTime() - new Date(element.released).getTime())/(24*60*60*1000) < 14)} })
+    .then(() => { if(filterReasonablePrice === 'On') { currentProducts = currentProducts.filter(element => element.price < 50)} })
     .then(() => { if (sort === 'price-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price < e2.price}) }
-                  else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
-                  else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
-                  else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }
-
-    })
+             else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
+             else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
+             else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
     .then(() => render(currentProducts, currentPagination));
 });
 
@@ -237,6 +254,8 @@ const addResonablePriceFilterInSelectBox = () => {
   selectBox.options.add(new Option("Off", "Off", true));
   selectBox.options.add(new Option("On", "On", false));
 }
+
+
 
 //Feature 5 - Sort by price
 
