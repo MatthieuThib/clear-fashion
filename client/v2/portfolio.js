@@ -17,11 +17,17 @@ const selectPage = document.querySelector('#page-select');
 const selectBrand = document.querySelector('#brand-select');
 const selectRecentProducts = document.querySelector('#recentProducts-select');
 const selectReasonablePrice = document.querySelector('#reasonablePrice-select');
-
 const selectSort = document.querySelector('#sort-select');
-
 const sectionProducts = document.querySelector('#products');
+
+// Indicators
 const spanNbProducts = document.querySelector('#nbProducts');
+const spanNbNewProducts = document.querySelector('#nbNewProducts');
+const spanp50 = document.querySelector('#p50');
+const spanp90 = document.querySelector('#p90');
+const spanp95 = document.querySelector('#p95');
+
+
 
 /**
  * Set global value
@@ -108,7 +114,8 @@ const renderPagination = pagination => {
 const renderIndicators = pagination => {
   const {count} = pagination;
 
-  spanNbProducts.innerHTML = count;
+  //spanNbProducts.innerHTML = count;
+  spanNbProducts.innerHTML = currentProducts.length;
 };
 
 const render = (products, pagination) => {
@@ -202,6 +209,9 @@ selectSort.addEventListener('change', event => {
              else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
              else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
              else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
+    .then(() => updateNbProducts())
+    .then(() => updateNbNewProducts())
+    .then(() => updatePValues())
     .then(() => render(currentProducts, currentPagination));
 });
 
@@ -258,11 +268,35 @@ const addResonablePriceFilterInSelectBox = () => {
 
 
 //Feature 5 - Sort by price
+//Feature 6 - Sort by date
 
+//Feature 8 - Number of products indicator
+const updateNbProducts = () => {
+  spanNbProducts.innerHTML = currentProducts.length;
+}
 
+//Feature 9 - Number of recent products indicator
+const updateNbNewProducts = () => {
+  spanNbNewProducts.innerHTML = currentProducts.filter(element => (new Date().getTime() - new Date(element.released).getTime())/(24*60*60*1000) < 14).length;
+}
 
+// Feature 10 - p50, p90 and p95 price value indicator
+function pValue(products, p){
+  let index = parseInt(products.length * p/100);
+  console.log(p, products.sort(sortByPrice)[index]);
+  var pvalue = products.sort(sortByPrice)[index].price;
+  return pvalue;
+}
+function sortByPrice(a, b){
+  return a.price - b.price;
+}
 
-
+const updatePValues = () => {
+  console.log(pValue(currentProducts, 50));
+  spanp50.innerHTML = pValue(currentProducts, 50);
+  spanp90.innerHTML = pValue(currentProducts, 90);
+  spanp95.innerHTML = pValue(currentProducts, 95);
+}
 
 
 
