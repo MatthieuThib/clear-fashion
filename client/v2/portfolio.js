@@ -18,6 +18,7 @@ const selectPage = document.querySelector('#page-select');
 const selectBrand = document.querySelector('#brand-select');
 const selectRecentProducts = document.querySelector('#recentProducts-select');
 const selectReasonablePrice = document.querySelector('#reasonablePrice-select');
+const selectFav = document.querySelector('#fav-select');
 const selectSort = document.querySelector('#sort-select');
 const sectionProducts = document.querySelector('#products');
 
@@ -157,6 +158,7 @@ selectShow.addEventListener('change', event => {
              else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
              else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
              else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
+    .then(() => { if(fav === 'On') { currentProducts = favProducts} })
     .then(() => render(currentProducts, currentPagination))
     .then(() => updateIndicators());
 });
@@ -174,6 +176,7 @@ selectPage.addEventListener('change', event => {
              else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
              else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
              else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
+    .then(() => { if(fav === 'On') { currentProducts = favProducts} })
     .then(() => render(currentProducts, currentPagination))
     .then(() => updateIndicators());
 });
@@ -191,6 +194,7 @@ selectBrand.addEventListener('change', event => {
              else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
              else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
              else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
+    .then(() => { if(fav === 'On') { currentProducts = favProducts} })
     .then(() => render(currentProducts, currentPagination))
     .then(() => updateIndicators());
 });
@@ -208,6 +212,7 @@ selectRecentProducts.addEventListener('change', event => {
              else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
              else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
              else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
+    .then(() => { if(fav === 'On') { currentProducts = favProducts} })
     .then(() => render(currentProducts, currentPagination))
     .then(() => updateIndicators());
 });
@@ -225,11 +230,30 @@ selectReasonablePrice.addEventListener('change', event => {
              else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
              else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
              else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
+    .then(() => { if(fav === 'On') { currentProducts = favProducts} })
     .then(() => render(currentProducts, currentPagination))
     .then(() => updateIndicators());
 });
 
-// SELECT SORT  FILTER
+// SELECT FAV FILTER
+selectFav.addEventListener('change', event => {
+  var fav = event.target.value;
+  fetchProducts(currentPagination.currentPage, currentPagination.pageSize)
+    .then(setCurrentProducts)
+    .then(() => addBrandsInSelectBox(getDisplayedBrands()))
+    .then(() => { if (brand !== 'All') {currentProducts = currentProducts.filter(element => element.brand === brand)} })
+    .then(() => { if(filterRecentProducts === 'On') { currentProducts = currentProducts.filter(element => (new Date().getTime() - new Date(element.released).getTime())/(24*60*60*1000) < 14)} })
+    .then(() => { if(filterReasonablePrice === 'On') { currentProducts = currentProducts.filter(element => element.price < 50)} })
+    .then(() => { if (sort === 'price-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price < e2.price}) }
+             else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
+             else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
+             else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
+    .then(() => { if(fav === 'On') { currentProducts = favProducts} })
+    .then(() => render(currentProducts, currentPagination))
+    .then(() => updateIndicators());
+});
+
+// SELECT SORT FILTER
 selectSort.addEventListener('change', event => {
   var sort = event.target.value;
   fetchProducts(currentPagination.currentPage, currentPagination.pageSize)
@@ -242,7 +266,7 @@ selectSort.addEventListener('change', event => {
              else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
              else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
              else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
-
+    .then(() => { if(fav === 'On') { currentProducts = favProducts} })
     .then(() => render(currentProducts, currentPagination))
     .then(() => updateIndicators());
 });
@@ -254,6 +278,7 @@ document.addEventListener('DOMContentLoaded', () =>
     .then(() => addBrandsInSelectBox(getDisplayedBrands())) 
     .then(() => addRecentlyReleasedFilterInSelectBox())
     .then(() => addResonablePriceFilterInSelectBox())
+    .then(() => addFavFilterInSelectBox())
 );
 
 
@@ -355,6 +380,12 @@ const updateIndicators = () => {
 // Feature 13 - Save as favorite
 
 // Feature 14 - Filter by favorite
+const addFavFilterInSelectBox = () => {
+  var selectBox = document.getElementById('fav-select');
+  selectBox.options.length = 0;
+  selectBox.options.add(new Option("Off", "Off", true));
+  selectBox.options.add(new Option("On", "On", false));
+}
 
 function checkFav(uuid){
   currentProducts.forEach(product => {
@@ -365,7 +396,17 @@ function checkFav(uuid){
     }
   })
 }
+
+function isFavorite(uuid, favProducts){
+  let boolean = false;
+  favProducts.forEach(product => {
+    if(product.uuid === uuid){
+      return true;
+    }
+  })
+}
 // Feature 15 - Usable and pleasant UX
+//style.css
 
 
 
