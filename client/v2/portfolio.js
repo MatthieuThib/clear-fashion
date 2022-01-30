@@ -26,6 +26,7 @@ const spanNbNewProducts = document.querySelector('#nbNewProducts');
 const spanp50 = document.querySelector('#p50');
 const spanp90 = document.querySelector('#p90');
 const spanp95 = document.querySelector('#p95');
+const spanLastDate = document.querySelector('#lastDate');
 
 
 
@@ -78,7 +79,7 @@ const renderProducts = products => {
       return `
       <div class="product" id=${product.uuid}>
         <span>${product.brand}</span>
-        <a href="${product.link}">${product.name}</a>
+        <a href="${product.link}"target="_blank">${product.name}</a>
         <span>${product.price}</span>
       </div>
     `;
@@ -209,10 +210,9 @@ selectSort.addEventListener('change', event => {
              else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
              else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
              else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
-    .then(() => updateNbProducts())
-    .then(() => updateNbNewProducts())
-    .then(() => updatePValues())
-    .then(() => render(currentProducts, currentPagination));
+
+    .then(() => render(currentProducts, currentPagination))
+    .then(() => updateIndicators());
 });
 
 document.addEventListener('DOMContentLoaded', () =>
@@ -265,8 +265,6 @@ const addResonablePriceFilterInSelectBox = () => {
   selectBox.options.add(new Option("On", "On", false));
 }
 
-
-
 //Feature 5 - Sort by price
 //Feature 6 - Sort by date
 
@@ -276,8 +274,11 @@ const updateNbProducts = () => {
 }
 
 //Feature 9 - Number of recent products indicator
+function isRecent(p){
+  return (new Date().getTime() - new Date(p.released).getTime())/(24*60*60*1000) < 14;
+}
 const updateNbNewProducts = () => {
-  spanNbNewProducts.innerHTML = currentProducts.filter(element => (new Date().getTime() - new Date(element.released).getTime())/(24*60*60*1000) < 14).length;
+  spanNbNewProducts.innerHTML = currentProducts.filter(isRecent).length;
 }
 
 // Feature 10 - p50, p90 and p95 price value indicator
@@ -298,7 +299,32 @@ const updatePValues = () => {
   spanp95.innerHTML = pValue(currentProducts, 95);
 }
 
+// Feature 11 - Last released date indicator
+function sortByDate(a, b){
+  return new Date(a.date).getDate() - new Date(b.date).getDate();
+}
+function lastProductReleasedDate(products){
+  return products.sort(sortByDate)[0].released
+}
+const updateLastReleasedProductDate = () => {
+  spanLastDate.innerHTML = lastProductReleasedDate(currentProducts);
+}
 
+const updateIndicators = () => {
+  updateNbProducts();
+  updateNbNewProducts();
+  updatePValues();
+  updateLastReleasedProductDate();
+}
+
+// Feature 12 - Open product link
+// add target="_blank" in render products href link
+
+// Feature 13 - Save as favorite
+
+// Feature 14 - Filter by favorite
+
+// Feature 15 - Usable and pleasant UX
 
 
 
