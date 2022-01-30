@@ -143,7 +143,15 @@ selectShow.addEventListener('change', event => {
   fetchProducts(currentPagination.currentPage, currentPagination.pageSize)
     .then(setCurrentProducts)
     .then(() => addBrandsInSelectBox(getDisplayedBrands()))
-    .then(() => render(currentProducts, currentPagination));
+    .then(() => { if (brand !== 'All') {currentProducts = currentProducts.filter(element => element.brand === brand)} })
+    .then(() => { if(filterRecentProducts === 'On') { currentProducts = currentProducts.filter(element => (new Date().getTime() - new Date(element.released).getTime())/(24*60*60*1000) < 14)} })
+    .then(() => { if(filterReasonablePrice === 'On') { currentProducts = currentProducts.filter(element => element.price < 50)} })
+    .then(() => { if (sort === 'price-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price < e2.price}) }
+             else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
+             else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
+             else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
+    .then(() => render(currentProducts, currentPagination))
+    .then(() => updateIndicators());
 });
 
 // SELECT PAGE NUMBER
@@ -152,7 +160,15 @@ selectPage.addEventListener('change', event => {
   fetchProducts(currentPagination.currentPage, currentPagination.pageSize)
     .then(setCurrentProducts)
     .then(() => addBrandsInSelectBox(getDisplayedBrands()))
-    .then(() => render(currentProducts, currentPagination));
+    .then(() => { if (brand !== 'All') {currentProducts = currentProducts.filter(element => element.brand === brand)} })
+    .then(() => { if(filterRecentProducts === 'On') { currentProducts = currentProducts.filter(element => (new Date().getTime() - new Date(element.released).getTime())/(24*60*60*1000) < 14)} })
+    .then(() => { if(filterReasonablePrice === 'On') { currentProducts = currentProducts.filter(element => element.price < 50)} })
+    .then(() => { if (sort === 'price-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price < e2.price}) }
+             else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
+             else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
+             else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
+    .then(() => render(currentProducts, currentPagination))
+    .then(() => updateIndicators());
 });
 
 // SELECT BRAND FILTER
@@ -160,9 +176,16 @@ selectBrand.addEventListener('change', event => {
   var brand = event.target.value;
   fetchProducts(currentPagination.currentPage, currentPagination.pageSize)
     .then(setCurrentProducts)
-    .then(() => { if (brand !== 'All') {currentProducts = currentProducts.filter(element => element.brand === brand)}
-    })
-    .then(() => render(currentProducts, currentPagination));
+    .then(() => addBrandsInSelectBox(getDisplayedBrands()))
+    .then(() => { if (brand !== 'All') {currentProducts = currentProducts.filter(element => element.brand === brand)} })
+    .then(() => { if(filterRecentProducts === 'On') { currentProducts = currentProducts.filter(element => (new Date().getTime() - new Date(element.released).getTime())/(24*60*60*1000) < 14)} })
+    .then(() => { if(filterReasonablePrice === 'On') { currentProducts = currentProducts.filter(element => element.price < 50)} })
+    .then(() => { if (sort === 'price-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price < e2.price}) }
+             else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
+             else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
+             else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
+    .then(() => render(currentProducts, currentPagination))
+    .then(() => updateIndicators());
 });
  
 // SELECT RECENTLY RELEASED PRODUCTS 
@@ -178,7 +201,8 @@ selectRecentProducts.addEventListener('change', event => {
              else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
              else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
              else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
-    .then(() => render(currentProducts, currentPagination));
+    .then(() => render(currentProducts, currentPagination))
+    .then(() => updateIndicators());
 });
 
 // SELECT REASONABLE PRICE FILTER
@@ -194,7 +218,8 @@ selectReasonablePrice.addEventListener('change', event => {
              else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
              else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
              else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
-    .then(() => render(currentProducts, currentPagination));
+    .then(() => render(currentProducts, currentPagination))
+    .then(() => updateIndicators());
 });
 
 // SELECT SORT  FILTER
