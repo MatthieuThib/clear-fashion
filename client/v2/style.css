@@ -1,19 +1,64 @@
-[id='toggle-heart'] {
+header{
+    background-position: center top;
+    line-height: 1.2;
+    text-align: center;
+    color: #ffffff;
+}
+
+body {  
+    font-family: "Courier New";
+    color: #ffffff;
+    background-color: rgb(16, 19, 22);
+    padding: 30px;
+}  
+
+.ck-label input {
     position: absolute;
-    left: -100vw;
-  }
+    opacity: 0;
+    cursor: pointer;
+}
 
-[for='toggle-heart'] {
-    color: #aab8c2;
-  }
+.ck-label label {
+    color: #ffffff;
+}
+
+
+@keyframes heart { 0%, 17.5% { font-size: 0; } }
+input[type=checkbox]:checked + label {
+  color: #e2264d;
+  animation: heart 1s cubic-bezier(.17, .89, .32, 1.49);
+}
+
+
+
+
+#options {
+    width: 50%;
+    float: left;
+}
+#indicators {
+    width: 50%;
+    float: left;
+}
+#products {
+    margin: auto;
+    padding: 300px 0px 0px 0px;
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
   
-  [id='toggle-heart']:checked + label {
-    color: #e2264d;
-  }
 
-  @keyframes heart { 0%, 17.5% { font-size: 0; } }
+  
 
-  [id='toggle-heart']:checked + label {
-    will-change: font-size;
-    animation: heart 1s cubic-bezier(.17, .89, .32, 1.49);
-  }
+

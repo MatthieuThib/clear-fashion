@@ -4,6 +4,7 @@
 // current products on the page
 let currentProducts = [];
 let currentPagination = {};
+let favProducts = [];
 
 // elements by default
 var brand = "All";
@@ -28,6 +29,7 @@ const spanp90 = document.querySelector('#p90');
 const spanp95 = document.querySelector('#p95');
 const spanLastDate = document.querySelector('#lastDate');
 
+const checkboxFav = document.querySelector('#toggle-heart');
 
 
 /**
@@ -78,9 +80,14 @@ const renderProducts = products => {
     .map(product => {
       return `
       <div class="product" id=${product.uuid}>
-        <span>${product.brand}</span>
+        <span>${product.brand.toUpperCase()}</span>
         <a href="${product.link}"target="_blank">${product.name}</a>
         <span>${product.price}</span>
+
+        <label class = "ck-label">
+          <input type="checkbox"  id="toggle-heart-${product.name}" onclick="checkFav('${product.uuid}')" />
+          <label for="toggle-heart-${product.name}">❤</label> 
+        </label>
       </div>
     `;
     })
@@ -349,6 +356,15 @@ const updateIndicators = () => {
 
 // Feature 14 - Filter by favorite
 
+function checkFav(uuid){
+  currentProducts.forEach(product => {
+    if(product.uuid === uuid && !favProducts.includes(product)){
+      var p = product;
+      p.fav = true;
+      favProducts.push(p);
+    }
+  })
+}
 // Feature 15 - Usable and pleasant UX
 
 
