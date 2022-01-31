@@ -12,7 +12,7 @@ var filterReasonablePrice = "Off";
 var filterRecentProducts = "Off";
 var sort = 'No';
 
-// inititiqte selectors
+// instantiate the selectors
 const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
 const selectBrand = document.querySelector('#brand-select');
@@ -142,7 +142,6 @@ const render = (products, pagination) => {
 
 /**
  * Select the number of products to display
- * @type {[type]}
  */
 
 // SELECT PAGE SIZE
