@@ -17,7 +17,7 @@ async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
     else if(eshop.includes('adress')){
       products = await adressbrand.scrape(eshop);
     }
-    else if(eshop.includes('adress')){
+    else if(eshop.includes('montlimart')){
       products = await montlimartbrand.scrape(eshop);
     }
 
