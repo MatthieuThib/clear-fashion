@@ -11,8 +11,9 @@ const urlDedicated = 'https://www.dedicatedbrand.com/en/loadfilter?category=men%
 const urlMontlimart = 'https://www.montlimart.com/toute-la-collection.html';
 
 async function sandbox (eshop = 'all') {
+//async function sandbox (eshop = urlMontlimart) {
   try {
-    console.log(`🕵️‍♀️  browsing ${eshop} source(s)`);
+    console.log(`🕵️‍♀️  Browsing ${eshop} source(s)`);
 
     var products = []
 
@@ -36,8 +37,10 @@ async function sandbox (eshop = 'all') {
       products = await montlimartbrand.scrape(urlMontlimart);
     }
 
+    console.log('🔍  Scrapped Products:')
     console.log(products);
     console.log('done');
+
     process.exit(0);
   } 
   
