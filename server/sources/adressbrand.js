@@ -22,9 +22,18 @@ const parse = data => {
           .text()
       );
 
+      const image = $(element)
+        .find('.product_img_link')
+        .attr('href');
+
+      const link = $(element)
+        .find('.product_img_link')
+        .children()
+        .attr('data-original');
+        
       const brand = 'ADRESSE';
 
-      return {name, price, brand};
+      return {name, price, image, link, brand};
     })
     .get();
 };
