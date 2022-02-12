@@ -20,9 +20,10 @@ const fetch = require("node-fetch");
                     products.push(
                         {
                             name : element.name, 
-                            price : element.price.priceAsNumber, 
+                            price : element.price.priceAsNumber,
                             image : element.image[0], 
-                            link : `https://www.dedicatedbrand.com/en/` + element.canonicalUri
+                            link : `https://www.dedicatedbrand.com/en/` + element.canonicalUri,
+                            brand : 'DEDICATED'
                         })
                 }
             });
