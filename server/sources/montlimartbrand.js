@@ -17,14 +17,32 @@ const parse = data => {
         .text()
         .trim()
         .replace(/\s/g, ' ');
+
       const price = parseInt(
         $(element)
           .find('.price')
           .text()
       );
+
+      var image = $(element)
+      .find('.product-image')
+      .children()
+      .children()
+      .attr('src');
+
+      if(image !== undefined){
+        image = image.toString()
+                     .replace(' ', '%20');
+      }
+
+      const link = $(element)
+      .find('.product-name')
+      .children()
+      .attr('href');
+
       const brand = 'MONTLIMART';
 
-      return {name, price, brand};
+      return {name, price, image, link, brand};
     })
     .get();
 };
