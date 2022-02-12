@@ -11,7 +11,7 @@ const urlDedicated = 'https://www.dedicatedbrand.com/en/loadfilter?category=men%
 const urlMontlimart = 'https://www.montlimart.com/toute-la-collection.html';
 
 async function sandbox (eshop = 'all') {
-//async function sandbox (eshop = urlMontlimart) {
+//async function sandbox (eshop = urlAdresse1) {
   try {
     console.log(`🕵️‍♀️  Browsing ${eshop} source(s)`);
 
