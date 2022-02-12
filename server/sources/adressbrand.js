@@ -22,7 +22,9 @@ const parse = data => {
           .text()
       );
 
-      return {name, price};
+      const brand = 'ADRESSE';
+
+      return {name, price, brand};
     })
     .get();
 };
