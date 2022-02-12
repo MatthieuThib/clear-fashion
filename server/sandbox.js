@@ -1,7 +1,7 @@
 /* eslint-disable no-console, no-process-exit */
 
 // const dedicatedbrand = require('./sources/dedicatedbrand');
-const test = require('./sources/test');
+const dedicatedbrand = require('./sources/dedicatedbrand');
 const adressbrand = require('./sources/adressbrand');
 const montlimartbrand = require('./sources/montlimartbrand');
 
@@ -16,8 +16,7 @@ async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/loadfilter?ca
     var products = []
 
     if(eshop.includes('dedicated')){
-      products = await test.scrape(eshop);
-      //products = await dedicatedbrand.scrape(eshop);
+      products = await dedicatedbrand.scrape(eshop);
     }
     else if(eshop.includes('adress')){
       products = await adressbrand.scrape(eshop);
