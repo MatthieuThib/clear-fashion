@@ -10,6 +10,7 @@
     "dependencies": "^0.0.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
+    "fs": "^0.0.1-security",
     "helmet": "^5.0.1",
     "mongodb": "^4.3.0",
     "node-fetch": "^2.6.6",
