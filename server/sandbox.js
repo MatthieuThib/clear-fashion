@@ -22,8 +22,6 @@ async function sandbox (eshop = 'all') {
     console.log(`🕵️‍♀️  Browsing ${eshop} source(s)`);
 
     var products = []
-    json_content = JSON.stringify(products, null, 2);
-        fs.writeFileSync('sites/montlimart_products.json', json_content);
 
     if(eshop === 'all'){
 
