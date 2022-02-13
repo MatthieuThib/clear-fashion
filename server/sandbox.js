@@ -24,21 +24,23 @@ async function sandbox (eshop = 'all') {
     var products = []
 
     if(eshop === 'all'){
-
       products = products.concat(await dedicatedbrand.scrape(urlDedicated));
       products = products.concat(await adressbrand.scrape(urlAdresse1));
       products = products.concat(await adressbrand.scrape(urlAdresse2));
       products = products.concat(await montlimartbrand.scrape(urlMontlimart));
     }
+
     else if(eshop.includes('dedicated')){
       products = await dedicatedbrand.scrape(urlDedicated);
     }
+
     else if(eshop.includes('adress')){
       const product1 = await adressbrand.scrape(urlAdresse1);
       const product2 = await adressbrand.scrape(urlAdresse2);
       products = product1.concat(product2);
 
     }
+    
     else if(eshop.includes('montlimart')){
       products = await montlimartbrand.scrape(urlMontlimart);
     }
