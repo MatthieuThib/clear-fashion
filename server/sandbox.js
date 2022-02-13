@@ -5,10 +5,9 @@ const dedicatedbrand = require('./sources/dedicatedbrand');
 const adressbrand = require('./sources/adressbrand');
 const montlimartbrand = require('./sources/montlimartbrand');
 
-const urlAdresse1 =  'https://adresse.paris/630-toute-la-collection';
-const urlAdresse2 =  'https://adresse.paris/630-toute-la-collection?p=2';
+const urlAdresse =  'https://adresse.paris/630-toute-la-collection'; // + "?p=2";
 const urlDedicated = 'https://www.dedicatedbrand.com/en/loadfilter?category=men%2Fnews';
-const urlMontlimart = 'https://www.montlimart.com/toute-la-collection.html';
+const urlMontlimart = 'https://www.montlimart.com/toute-la-collection.html'; // + "?p=2";
 
 
 function saveAsJson (products){
@@ -17,38 +16,71 @@ function saveAsJson (products){
   fs.writeFileSync('products/products.json', json);
 }
 
-async function sandbox (eshop = 'all') {
+async function browseMontlimart (urlMontlimart, numberOfPages = 8){
+  var products = [];
+
+  for(let i = 2; i <= numberOfPages; i++){
+    var p = await montlimartbrand.scrape(urlMontlimart + `?p=i`);
+    products = products.concat(p);
+  }
+
+  return products;
+}
+
+async function browseAdresse (urlAdresse, numberOfPages = 2){
+  var products = [];
+
+  for(let i = 2; i <= numberOfPages; i++){
+    products = products.concat(await adressbrand.scrape(urlAdresse + `?p=i`));
+  }
+
+  return products;
+}
+
+async function browseDedicated (urlMontlimart){
+  var products = [];
+  products = products.concat(await dedicatedbrand.scrape(urlDedicated));
+
+  return products;
+}
+
+async function browseAll (){
+  var products = [];
+  products = products.concat(await browseDedicated(urlDedicated)); // 1572 products
+  products = products.concat(await browseAdresse(urlAdresse)); // 90 products
+  products = products.concat(await browseMontlimart(urlMontlimart)); // 112 products
+
+  return products;
+}
+
+
+
+async function sandbox (eshop = 'all'){
   try {
     console.log(`🕵️‍♀️  Browsing ${eshop} source(s)`);
 
     var products = []
 
     if(eshop === 'all'){
-      products = products.concat(await dedicatedbrand.scrape(urlDedicated));
-      products = products.concat(await adressbrand.scrape(urlAdresse1));
-      products = products.concat(await adressbrand.scrape(urlAdresse2));
-      products = products.concat(await montlimartbrand.scrape(urlMontlimart));
+      products = await browseAll();
     }
 
     else if(eshop.includes('dedicated')){
-      products = await dedicatedbrand.scrape(urlDedicated);
+      products = await browseDedicated(urlDedicated);
     }
 
-    else if(eshop.includes('adress')){
-      const product1 = await adressbrand.scrape(urlAdresse1);
-      const product2 = await adressbrand.scrape(urlAdresse2);
-      products = product1.concat(product2);
-
+    else if(eshop.includes('adresse')){
+      products = await browseAdresse(urlAdresse);
     }
     
     else if(eshop.includes('montlimart')){
-      products = await montlimartbrand.scrape(urlMontlimart);
+      products = await browseMontlimart(urlMontlimart)
     }
 
     saveAsJson(products);
 
-    //console.log('🔍  Scrapped Products:')
-    //console.log(products);
+    // console.log('🔍  Scrapped Products:')
+    // console.log(products);
     console.log('✅  Done');
 
     process.exit(0);
