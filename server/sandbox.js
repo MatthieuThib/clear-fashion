@@ -1,6 +1,6 @@
 /* eslint-disable no-console, no-process-exit */
+const fs = require('fs');
 
-// const dedicatedbrand = require('./sources/dedicatedbrand');
 const dedicatedbrand = require('./sources/dedicatedbrand');
 const adressbrand = require('./sources/adressbrand');
 const montlimartbrand = require('./sources/montlimartbrand');
@@ -10,12 +10,20 @@ const urlAdresse2 =  'https://adresse.paris/630-toute-la-collection?p=2';
 const urlDedicated = 'https://www.dedicatedbrand.com/en/loadfilter?category=men%2Fnews';
 const urlMontlimart = 'https://www.montlimart.com/toute-la-collection.html';
 
+
+function saveAsJson (products){
+  var json = JSON.stringify(products, null, 2);
+  console.log('💾  Saving products as products.json');
+  fs.writeFileSync('products/products.json', json);
+}
+
 async function sandbox (eshop = 'all') {
-//async function sandbox (eshop = urlAdresse1) {
   try {
     console.log(`🕵️‍♀️  Browsing ${eshop} source(s)`);
 
     var products = []
+    json_content = JSON.stringify(products, null, 2);
+        fs.writeFileSync('sites/montlimart_products.json', json_content);
 
     if(eshop === 'all'){
 
@@ -37,9 +45,11 @@ async function sandbox (eshop = 'all') {
       products = await montlimartbrand.scrape(urlMontlimart);
     }
 
-    console.log('🔍  Scrapped Products:')
-    console.log(products);
-    console.log('done');
+    saveAsJson(products);
+
+    //console.log('🔍  Scrapped Products:')
+    //console.log(products);
+    console.log('✅  Done');
 
     process.exit(0);
   } 
