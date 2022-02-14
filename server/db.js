@@ -1,11 +1,15 @@
 const { MongoClient } = require('mongodb');
 
-const MONGODB_URI = "mongodb+srv://cf:ClearFashion2022@clearfashion.icpqp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const [,, password] = process.argv;
+
+const MONGODB_URI = `mongodb+srv://cf:${password}@clearfashion.icpqp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const MONGODB_DB_NAME = "clearfashion"
 
 var client = null;
 var db = null;
 var connected = false;
+
+
 
 var products = require('./products/products.json');
 
@@ -17,6 +21,7 @@ async function OpenConnection(MONGODB_URI, MONGODB_DB_NAME){
         connected = true;
     } 
     catch(e) {
+        console.log(" ❌  Connection Failed");
         console.error(e);
     }
 }
@@ -25,7 +30,7 @@ async function CloseConnection(client){
     await client.close();
     connected = false;
     
-    console.log(" ❌ Connection Closed");
+    console.log(" ⏹  Connection Closed");
 }
 
 async function InsertProducts(products){
@@ -44,10 +49,10 @@ async function InsertProducts(products){
 
 async function main(){
     await OpenConnection(MONGODB_URI, MONGODB_DB_NAME);
-    
-    await InsertProducts(products);
-    
-    await CloseConnection(client);
+    if(connected == true){
+        await InsertProducts(products);
+        await CloseConnection(client);
+    }
 }
 
 main();
