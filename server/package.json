@@ -5,6 +5,7 @@
   "main": "index.js",
   "repository": "git@github.com:92bondstreet/clear-fashion.git",
   "dependencies": {
+    "body-parser": "^1.19.1",
     "cheerio": "^1.0.0-rc.10",
     "cors": "^2.8.5",
     "dependencies": "^0.0.1",
@@ -12,7 +13,7 @@
     "express": "^4.17.2",
     "fs": "^0.0.1-security",
     "helmet": "^5.0.1",
-    "mongodb": "^4.3.0",
+    "mongodb": "^4.3.1",
     "node-fetch": "^2.6.6",
     "parse-domain": "^4.1.0",
     "require-all": "^3.0.0",

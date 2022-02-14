@@ -141,7 +141,7 @@
   "resolved" "https://registry.npmjs.org/binary-extensions/-/binary-extensions-2.2.0.tgz"
   "version" "2.2.0"
 
-"body-parser@1.19.1":
+"body-parser@^1.19.1", "body-parser@1.19.1":
   "integrity" "sha512-8ljfQi5eBk8EJfECMrgqNGWPEY5jWP+1IzkzkGdFFEwFQZZyaZ21UqdaHktgiMlH0xLHqIFtE/u2OYE5dOtViA=="
   "resolved" "https://registry.npmjs.org/body-parser/-/body-parser-1.19.1.tgz"
   "version" "1.19.1"
@@ -1055,7 +1055,7 @@
   "resolved" "https://registry.npmjs.org/minimist/-/minimist-1.2.5.tgz"
   "version" "1.2.5"
 
-"mongodb-connection-string-url@^2.3.2":
+"mongodb-connection-string-url@^2.4.1":
   "integrity" "sha512-d5Kd2bVsKcSA7YI/yo57fSTtMwRQdFkvc5IZwod1RRxJtECeWPPSo7zqcUGJELifRA//Igs4spVtYAmvFCatug=="
   "resolved" "https://registry.npmjs.org/mongodb-connection-string-url/-/mongodb-connection-string-url-2.4.1.tgz"
   "version" "2.4.1"
@@ -1063,14 +1063,14 @@
     "@types/whatwg-url" "^8.2.1"
     "whatwg-url" "^11.0.0"
 
-"mongodb@^4.3.0":
-  "integrity" "sha512-ovq9ZD9wEvab+LsaQOiwtne1Sy2egaHW8K/H5M18Tv+V5PgTRi+qdmxDGlbm94TSL3h56m6amstptu115Nzgow=="
-  "resolved" "https://registry.npmjs.org/mongodb/-/mongodb-4.3.0.tgz"
-  "version" "4.3.0"
+"mongodb@^4.3.1":
+  "integrity" "sha512-sNa8APSIk+r4x31ZwctKjuPSaeKuvUeNb/fu/3B6dRM02HpEgig7hTHM8A/PJQTlxuC/KFWlDlQjhsk/S43tBg=="
+  "resolved" "https://registry.npmjs.org/mongodb/-/mongodb-4.3.1.tgz"
+  "version" "4.3.1"
   dependencies:
     "bson" "^4.6.1"
     "denque" "^2.0.1"
-    "mongodb-connection-string-url" "^2.3.2"
+    "mongodb-connection-string-url" "^2.4.1"
     "socks" "^2.6.1"
   optionalDependencies:
     "saslprep" "^1.0.3"
@@ -1096,9 +1096,9 @@
   "version" "0.6.2"
 
 "node-fetch@^2.6.1", "node-fetch@^2.6.6":
-  "integrity" "sha512-Z8/6vRlTUChSdIgMa51jxQ4lrw/Jy5SOW10ObaA47/RElsAN2c5Pn8bTgFGWn/ibwzXTE8qwr1Yzx28vsecXEA=="
-  "resolved" "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.6.tgz"
-  "version" "2.6.6"
+  "integrity" "sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ=="
+  "resolved" "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.7.tgz"
+  "version" "2.6.7"
   dependencies:
     "whatwg-url" "^5.0.0"
 
