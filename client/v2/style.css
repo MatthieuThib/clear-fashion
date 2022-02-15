@@ -1,16 +1,57 @@
-header{
+/*header{
     background-position: center top;
     line-height: 1.2;
     text-align: center;
     color: #ffffff;
-}
+}*/
 
 body {  
     font-family: "Courier New";
     color: #ffffff;
     background-color: rgb(16, 19, 22);
-    padding: 30px;
 }  
+
+.logo {
+    padding-left: 4px;
+    padding: 0 1em;
+  }
+  
+.topnav {
+    padding-left: 40px;
+    overflow: hidden;
+    background-color: rgb(48, 144, 72);
+  }
+
+
+
+.navbar-element {
+    position: a;
+    display: flex;
+    background-color: #7b4cea;
+    text-decoration: none;
+    color: white;}
+
+
+  
+  .topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    background-color: #7b4cea;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+
+
+
+
+
+
+
+
+
+
 
 .ck-label input {
     position: absolute;
@@ -28,9 +69,6 @@ input[type=checkbox]:checked + label {
   color: #e2264d;
   animation: heart 1s cubic-bezier(.17, .89, .32, 1.49);
 }
-
-
-
 
 #options {
     width: 50%;
