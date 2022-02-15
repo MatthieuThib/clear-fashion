@@ -6,58 +6,67 @@ body {
   background-color: rgb(16, 19, 22);
 }
 
-.navbar-element{
-    position: relative;
-    display: inline-block;
-
-  border-radius: 10px;
-  border: 2px solid;
-  border-color: rgb(48, 144, 72);
+.logo {
+    height: 150px;
+    padding-left: 20px;
+    padding-right: 50px;
+    vertical-align: middle;
   }
 
-
-.logo {
-  height : 80px;
-  padding-left: 20px;
-  padding-right: 50px;
-  vertical-align: middle;
-}
+  
 
 .topnav {
   background-color: rgb(0, 0, 0);
-  /*border*/
-
   border-radius: 10px;
   border: 2px solid;
   border-color: rgb(48, 144, 72);
 }
 
-.topnav a {
-    right: 0;
-  color: #f2f2f2;
-  text-align: center;
 
-  background-color: rgb(0, 0, 0);
-  border-radius: 10px;
-  border-color: rgb(255, 0, 0);
 
-  padding: 10px 30px;
-  font-size: 20px;
-
-  display: inline-block;
-  
+.navbar-element {
+    display: inline-block;
 }
 
+.topnav a {
+  color: #f2f2f2;
+
+  background-color: rgb(0, 0, 0);
+  padding: 10px 30px;
+  border-radius: 10px;
+  border: 2px solid;
+  border-color: rgb(48, 144, 72);
+
+  font-size: 20px;
+}
+
+.topnav-right {
+    float: right;
+  }
+
+
+  
 .topnav input {
   color: rgb(48, 144, 72);
   background-color: white;
+
   padding: 10px 30px;
   font-size: 20px;
 
   border-radius: 10px;
   border-color: rgb(48, 144, 72);
-
 }
+
+.container{
+    
+}
+
+
+
+
+
+
+
 
 
 
@@ -83,13 +92,6 @@ input[type="checkbox"]:checked + label {
   color: #e2264d;
   animation: heart 1s cubic-bezier(0.17, 0.89, 0.32, 1.49);
 }
-
-
-
-
-
-
-
 
 #options {
   width: 50%;
