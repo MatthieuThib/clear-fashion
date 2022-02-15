@@ -1,102 +1,106 @@
-/*header{
-    background-position: center top;
-    line-height: 1.2;
-    text-align: center;
-    color: #ffffff;
-}*/
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@600&display=swap");
 
-body {  
-    font-family: "Courier New";
-    color: #ffffff;
-    background-color: rgb(16, 19, 22);
-}  
+body {
+  font-family: "Fira Sans Extra Condensed", sans-serif;
+  color: #ffffff;
+  background-color: rgb(16, 19, 22);
+}
+
+.navbar-element{
+    position: relative;
+    display: inline-block;
+
+  border-radius: 10px;
+  border: 2px solid;
+  border-color: rgb(48, 144, 72);
+  }
+
 
 .logo {
-    padding-left: 4px;
-    padding: 0 1em;
-  }
-  
+  height : 80px;
+  padding-left: 20px;
+  padding-right: 50px;
+  vertical-align: middle;
+}
+
 .topnav {
-    padding-left: 40px;
-    overflow: hidden;
-    background-color: rgb(48, 144, 72);
-  }
+  background-color: rgb(0, 0, 0);
+  /*border*/
 
+  border-radius: 10px;
+  border: 2px solid;
+  border-color: rgb(48, 144, 72);
+}
 
+.topnav a {
+    right: 0;
+  color: #f2f2f2;
+  text-align: center;
 
-.navbar-element {
-    position: a;
-    display: flex;
-    background-color: #7b4cea;
-    text-decoration: none;
-    color: white;}
+  background-color: rgb(0, 0, 0);
+  border-radius: 10px;
+  border-color: rgb(255, 0, 0);
 
+  padding: 10px 30px;
+  font-size: 20px;
 
+  display: inline-block;
   
-  .topnav a {
-    float: left;
-    color: #f2f2f2;
-    text-align: center;
-    background-color: #7b4cea;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
-  }
+}
 
+.topnav input {
+  color: rgb(48, 144, 72);
+  background-color: white;
+  padding: 10px 30px;
+  font-size: 20px;
 
+  border-radius: 10px;
+  border-color: rgb(48, 144, 72);
 
-
-
-
+}
 
 
 
 
 
 .ck-label input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
 }
 
 .ck-label label {
-    color: #ffffff;
+  color: #ffffff;
 }
 
-
-@keyframes heart { 0%, 17.5% { font-size: 0; } }
-input[type=checkbox]:checked + label {
+@keyframes heart {
+  0%,
+  17.5% {
+    font-size: 0;
+  }
+}
+input[type="checkbox"]:checked + label {
   color: #e2264d;
-  animation: heart 1s cubic-bezier(.17, .89, .32, 1.49);
+  animation: heart 1s cubic-bezier(0.17, 0.89, 0.32, 1.49);
 }
+
+
+
+
+
+
+
 
 #options {
-    width: 50%;
-    float: left;
+  width: 50%;
+  float: left;
 }
 #indicators {
-    width: 50%;
-    float: left;
+  width: 50%;
+  float: left;
 }
 #products {
-    margin: auto;
-    padding: 300px 0px 0px 0px;
-    text-align: center;
+  margin: auto;
+  padding: 300px 0px 0px 0px;
+  text-align: center;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
-
-
