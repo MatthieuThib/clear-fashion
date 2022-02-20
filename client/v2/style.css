@@ -12,17 +12,13 @@ body {
     padding-right: 50px;
     vertical-align: middle;
   }
-
   
-
 .topnav {
   background-color: rgb(0, 0, 0);
   border-radius: 10px;
   border: 2px solid;
   border-color: rgb(48, 144, 72);
 }
-
-
 
 .navbar-element {
     display: inline-block;
@@ -56,14 +52,6 @@ body {
   border-radius: 10px;
   border-color: rgb(48, 144, 72);
 }
-
-.container{
-    
-}
-
-
-
-
 
 
 
