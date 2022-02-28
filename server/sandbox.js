@@ -4,11 +4,12 @@ const fs = require('fs');
 const dedicatedbrand = require('./sources/dedicatedbrand');
 const adressbrand = require('./sources/adressbrand');
 const montlimartbrand = require('./sources/montlimartbrand');
+const _1083brand = require('./sources/1083brand');
 
 const urlAdresse =  'https://adresse.paris/630-toute-la-collection'; // + "?p=2";
 const urlDedicated = 'https://www.dedicatedbrand.com/en/loadfilter?category=men%2Fnews';
 const urlMontlimart = 'https://www.montlimart.com/toute-la-collection.html'; // + "?p=2";
-
+const url1083 = 'https://www.1083.fr/'; //homme.html?limit=108'; //+ "&p=2";
 
 function saveAsJson (products){
   var json = JSON.stringify(products, null, 2);
@@ -44,11 +45,26 @@ async function browseDedicated (urlMontlimart){
   return products;
 }
 
+async function browse1083 (url1083, numberOfPages = 2){
+  var products = [];
+  const categories = ['homme', 'femme']
+
+  for(let c = 0; c < categories.length; c++){
+    for(let i = 1; i <= numberOfPages; i++){
+      var p = await _1083brand.scrape(url1083 + `${categories[c]}.html?limit=108` + `&p=${i}`);
+      products = products.concat(p);
+    }
+  }
+
+  return products;
+}
+
 async function browseAll (){
   var products = [];
   products = products.concat(await browseDedicated(urlDedicated)); // 1572 products
   products = products.concat(await browseAdresse(urlAdresse)); // 90 products
   products = products.concat(await browseMontlimart(urlMontlimart)); // 112 products
+  products = products.concat(await browse1083(url1083)); // 322 products
 
   return products;
 }
@@ -77,10 +93,16 @@ async function sandbox (eshop = 'all'){
       products = await browseMontlimart(urlMontlimart)
     }
 
+    else if(eshop.includes('1083')){
+      products = await browse1083(url1083)
+    }
+
     saveAsJson(products);
 
     // console.log('🔍  Scrapped Products:')
     // console.log(products);
+    console.log(products.length)
+
     console.log('✅  Done');
 
     process.exit(0);
