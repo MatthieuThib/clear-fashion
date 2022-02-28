@@ -7,6 +7,7 @@ const montlimartbrand = require('./sources/montlimartbrand');
 const _1083brand = require('./sources/1083brand');
 const loombrand = require('./sources/loombrand');
 const ecclobrand = require('./sources/ecclobrand');
+const gentlefactorybrand = require('./sources/gentlefactorybrand');
 
 const urlAdresse =  'https://adresse.paris/630-toute-la-collection'; // + "?p=2";
 const urlDedicated = 'https://www.dedicatedbrand.com/en/loadfilter?category=men%2Fnews';
@@ -14,7 +15,7 @@ const urlMontlimart = 'https://www.montlimart.com/toute-la-collection.html'; // 
 const url1083 = 'https://www.1083.fr/'; //homme.html?limit=108'; //+ "&p=2";
 const urlLoom = 'https://www.loom.fr/collections/vestiaire-'; //+ "homme";
 const urlecclo = 'https://ecclo.fr/collections/'; // + 'homme';
-
+const urlgentlefactory = 'https://www.lagentlefactory.com/'; // + 16-homme-made-in-france'; 
 
 function saveAsJson (products){
   var json = JSON.stringify(products, null, 2);
@@ -76,7 +77,7 @@ async function browseLoom (urlLoom){
   return products;
 }
 
-async function browseEcclo (urlecclo, numberOfPages = 1){
+async function browseEcclo (urlecclo){
   var products = [];
   const categories = ['homme', 'femme']
 
@@ -88,14 +89,31 @@ async function browseEcclo (urlecclo, numberOfPages = 1){
   return products;
 }
 
+async function browseGentleFactory (urlgentlefactory, numberOfPages = 5){
+  var products = [];
+  const categories = ['16-homme-made-in-france', '30-femme-made-in-france']
+
+  for(let c = 0; c < categories.length; c++){
+    for(let i = 1; i <= numberOfPages; i++){
+      var p = await gentlefactorybrand.scrape(urlgentlefactory + `${categories[c]}#/page-${i}`);
+      products = products.concat(p);
+    }
+    numberOfPages = 3;
+  }
+
+  return products;
+}
+
 async function browseAll (){
   var products = [];
+  
   products = products.concat(await browseDedicated(urlDedicated)); // 1572 products
   products = products.concat(await browseAdresse(urlAdresse)); // 90 products
   products = products.concat(await browseMontlimart(urlMontlimart)); // 112 products
   products = products.concat(await browse1083(url1083)); // 322 products
-  products = products.concat(await browseLoom(urlLoom)); // products
-  products = products.concat(await browseEcclo(urlecclo)); // products
+  products = products.concat(await browseLoom(urlLoom)); // 47 products
+  products = products.concat(await browseEcclo(urlecclo)); // 64 products
+  products = products.concat(await browseGentleFactory(urlgentlefactory)); // 237 products
 
   return products;
 }
@@ -134,6 +152,10 @@ async function sandbox (eshop = 'all'){
 
     else if(eshop.includes('ecclo')){
       products = await browseEcclo(urlecclo)
+    }
+
+    else if(eshop.includes('gentlefactory')){
+      products = await browseGentleFactory(urlgentlefactory)
     }
 
     saveAsJson(products);
