@@ -6,12 +6,15 @@ const adressbrand = require('./sources/adressbrand');
 const montlimartbrand = require('./sources/montlimartbrand');
 const _1083brand = require('./sources/1083brand');
 const loombrand = require('./sources/loombrand');
+const ecclobrand = require('./sources/ecclobrand');
 
 const urlAdresse =  'https://adresse.paris/630-toute-la-collection'; // + "?p=2";
 const urlDedicated = 'https://www.dedicatedbrand.com/en/loadfilter?category=men%2Fnews';
 const urlMontlimart = 'https://www.montlimart.com/toute-la-collection.html'; // + "?p=2";
 const url1083 = 'https://www.1083.fr/'; //homme.html?limit=108'; //+ "&p=2";
 const urlLoom = 'https://www.loom.fr/collections/vestiaire-'; //+ "homme";
+const urlecclo = 'https://ecclo.fr/collections/'; // + 'homme';
+
 
 function saveAsJson (products){
   var json = JSON.stringify(products, null, 2);
@@ -66,9 +69,20 @@ async function browseLoom (urlLoom){
   const categories = ['homme', 'femme']
 
   for(let c = 0; c < categories.length; c++){
-    console.log(urlLoom + `${categories[c]}`);
     var p = await loombrand.scrape(urlLoom + `${categories[c]}`);
     products = products.concat(p);
+  }
+
+  return products;
+}
+
+async function browseEcclo (urlecclo, numberOfPages = 1){
+  var products = [];
+  const categories = ['homme', 'femme']
+
+  for(let c = 0; c < categories.length; c++){
+      var p = await ecclobrand.scrape(urlecclo + `${categories[c]}`);
+      products = products.concat(p);
   }
 
   return products;
@@ -80,7 +94,8 @@ async function browseAll (){
   products = products.concat(await browseAdresse(urlAdresse)); // 90 products
   products = products.concat(await browseMontlimart(urlMontlimart)); // 112 products
   products = products.concat(await browse1083(url1083)); // 322 products
-  products = products.concat(await browseLoom(urlLoom)); // 322 products
+  products = products.concat(await browseLoom(urlLoom)); // products
+  products = products.concat(await browseEcclo(urlecclo)); // products
 
   return products;
 }
@@ -115,6 +130,10 @@ async function sandbox (eshop = 'all'){
 
     else if(eshop.includes('loom')){
       products = await browseLoom(urlLoom)
+    }
+
+    else if(eshop.includes('ecclo')){
+      products = await browseEcclo(urlecclo)
     }
 
     saveAsJson(products);
