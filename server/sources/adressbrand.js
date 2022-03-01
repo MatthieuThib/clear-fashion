@@ -32,8 +32,9 @@ const parse = data => {
         .attr('data-original');
         
       const brand = 'ADRESSE';
+      const favorite = false;
 
-      return {name, price, image, link, brand};
+      return {name, price, image, link, brand, favorite};
     })
     .get();
 };

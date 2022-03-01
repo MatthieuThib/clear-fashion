@@ -39,8 +39,9 @@ const parse = data => {
       .attr('href');
 
       const brand = '1083';
+      const favorite = false;
 
-      return {name, price, image, link, brand};
+      return {name, price, image, link, brand, favorite};
     })
     .get();
 };

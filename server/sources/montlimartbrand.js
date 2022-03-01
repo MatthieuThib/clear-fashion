@@ -41,8 +41,9 @@ const parse = data => {
       .attr('href');
 
       const brand = 'MONTLIMART';
+      const favorite = false;
 
-      return {name, price, image, link, brand};
+      return {name, price, image, link, brand, favorite};
     })
     .get();
 };

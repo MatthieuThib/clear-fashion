@@ -38,10 +38,10 @@ const parse = data => {
       .attr('href');*/
 
       const brand = 'WEDRESSFAIR';
+      const favorite = false;
 
-
-
-      return {price} //, image, link, brand};
+      // return {name, price, image, link, brand, favorite};
+      return {price, link, brand, favorite};
     })
     .get();
 };

@@ -38,10 +38,9 @@ const parse = data => {
       .attr('href');
 
       const brand = 'LOOM';
+      const favorite = false;
 
-
-
-      return {name, image, link, brand};
+      return {name, price, image, link, brand, favorite};
     })
     .get();
 };

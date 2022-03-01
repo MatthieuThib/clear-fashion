@@ -23,7 +23,8 @@ const fetch = require("node-fetch");
                             price : element.price.priceAsNumber,
                             image : element.image[0], 
                             link : `https://www.dedicatedbrand.com/en/` + element.canonicalUri,
-                            brand : 'DEDICATED'
+                            brand : 'DEDICATED',
+                            favorite : false
                         })
                 }
             });
