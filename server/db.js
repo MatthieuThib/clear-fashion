@@ -53,6 +53,21 @@ async function FindProducts(query, printResults = false){
         const result = await db.collection("products").find(query).toArray()
 
         if(printResults){
+            console.log(' 🧐 Find:', query);
+            console.log(` 📄 ${result.length} documents found:`);
+            await result.forEach(doc => console.log(doc));
+        }
+
+        return result;
+    }
+}
+
+async function AggregatesProducts(query, printResults = false){
+    if(connected == true){
+        const result = await db.collection("products").aggregate(query).toArray()
+
+        if(printResults){
+            console.log(' 🧐  Aggregate:', query);
             console.log(` 📄  ${result.length} documents found:`);
             await result.forEach(doc => console.log(doc));
         }
@@ -65,10 +80,43 @@ async function main(){
     await OpenConnection(MONGODB_URI, MONGODB_DB_NAME);
 
     if(connected){
-        var query = { price: {"$gte" : 400} }
+        //var query = { price: {"$gte" : 400} }
+        //await FindProducts(query, true);
+
+        //var query = [ { $sort : { price : -1} } ]
+        //await AggregatesProducts(query, true);
+
+        var query = productsFromBrand("LOOM")
         await FindProducts(query, true);
+
         await CloseConnection(client);
     }
+}
+
+function productsFromBrand(brand){
+    return { brand: `${brand.toUpperCase()}` }
+}
+
+function productsLessThan(price){
+    return { price: {"$lte" : price} }
+}
+
+function productsMoreThan(price){
+    return { price: {"$gte" : price} }
+}
+
+function productsSortedByPrice(asc = true){
+    if (asc = false){
+        return [ { $sort : { price : -1} } ]
+    }
+    return [ { $sort : { price : 1} } ]
+}
+
+function productsSortedByDate(asc = true){
+    if (asc = false){
+        return [ { $sort : { date : -1} } ]
+    }
+    return [ { $sort : { date : 1} } ]
 }
 
 main();
