@@ -21,7 +21,7 @@ async function OpenConnection(MONGODB_URI, MONGODB_DB_NAME){
         connected = true;
     } 
     catch(e) {
-        console.log(" ❌  Connection Failed");
+        console.log(` ❌  Connection Failed`);
         console.error(e);
     }
 }
@@ -30,29 +30,46 @@ async function CloseConnection(client){
     await client.close();
     connected = false;
     
-    console.log(" ⏹  Connection Closed");
+    console.log(" ⏹  Connection Closed\n\n");
 }
 
-async function InsertProducts(products){
+async function InsertDocuments(collectionName = "products", documents = products){
 
     if(await db.listCollections({ name: db.collection.name }).toArray().length != 0){
         // drop databse if exists
-        db.dropCollection("products");
+        await db.dropCollection(collectionName);
     }
     
-    db.createCollection("products");
+    db.createCollection(collectionName);
 
-    console.log(` 🐣 Inserting ${products.length} products`);
-    const collection = await db.collection('products');
-    await collection.insertMany(products);
+    console.log(` 🐣 Inserting ${documents.length} documents in ${collectionName}.`);
+
+    const collection = await db.collection(collectionName);
+    await collection.insertMany(documents);
+}
+
+async function FindProducts(query, printResults = false){
+    if(connected == true){
+        const result = await db.collection("products").find(query).toArray()
+
+        if(printResults){
+            console.log(` 📄  ${result.length} documents found:`);
+            await result.forEach(doc => console.log(doc));
+        }
+
+        return result;
+    }
 }
 
 async function main(){
     await OpenConnection(MONGODB_URI, MONGODB_DB_NAME);
-    if(connected == true){
-        await InsertProducts(products);
+
+    if(connected){
+        var query = { price: {"$gte" : 400} }
+        await FindProducts(query, true);
         await CloseConnection(client);
     }
 }
 
 main();
+
