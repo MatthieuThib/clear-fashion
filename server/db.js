@@ -1,19 +1,16 @@
 const { MongoClient } = require('mongodb');
+const dotenv = require('dotenv').config()
 
-const [,, password] = process.argv;
-
-const MONGODB_URI = `mongodb+srv://cf:${password}@clearfashion.icpqp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
-const MONGODB_DB_NAME = "clearfashion"
+const URI = process.env.MONGODB_URI;
+const DB_NAME = "clearfashion"
 
 var client = null;
 var db = null;
 var connected = false;
-
-
-
 var products = require('./products/products.json');
 
-async function OpenConnection(MONGODB_URI, MONGODB_DB_NAME){
+
+async function OpenConnection(MONGODB_URI = URI, MONGODB_DB_NAME = DB_NAME) {
     try {
         client = await MongoClient.connect(MONGODB_URI, {'useNewUrlParser': true});
         db = client.db(MONGODB_DB_NAME);
@@ -29,9 +26,11 @@ async function OpenConnection(MONGODB_URI, MONGODB_DB_NAME){
 async function CloseConnection(client){
     await client.close();
     connected = false;
-    
+
     console.log(" ⏹  Connection Closed\n\n");
 }
+
+
 
 async function InsertDocuments(collectionName = "products", documents = products){
 
@@ -48,7 +47,7 @@ async function InsertDocuments(collectionName = "products", documents = products
     await collection.insertMany(documents);
 }
 
-async function FindProducts(query, printResults = false){
+async function FindProducts(query = {}, printResults = false) {
     if(connected == true){
         const result = await db.collection("products").find(query).toArray()
 
@@ -57,12 +56,11 @@ async function FindProducts(query, printResults = false){
             console.log(` 📄 ${result.length} documents found:`);
             await result.forEach(doc => console.log(doc));
         }
-
         return result;
     }
 }
 
-async function AggregatesProducts(query, printResults = false){
+async function AggregatesProducts(query = [{}], printResults = false) {
     if(connected == true){
         const result = await db.collection("products").aggregate(query).toArray()
 
@@ -76,19 +74,12 @@ async function AggregatesProducts(query, printResults = false){
     }
 }
 
+
 async function main(){
     await OpenConnection(MONGODB_URI, MONGODB_DB_NAME);
 
     if(connected){
-        //var query = { price: {"$gte" : 400} }
-        //await FindProducts(query, true);
-
-        //var query = [ { $sort : { price : -1} } ]
-        //await AggregatesProducts(query, true);
-
-        var query = productsFromBrand("LOOM")
-        await FindProducts(query, true);
-
+        await FindProducts({}, true);
         await CloseConnection(client);
     }
 }
@@ -112,12 +103,16 @@ function productsSortedByPrice(asc = true){
     return [ { $sort : { price : 1} } ]
 }
 
-function productsSortedByDate(asc = true){
-    if (asc = false){
-        return [ { $sort : { date : -1} } ]
-    }
-    return [ { $sort : { date : 1} } ]
-}
 
-main();
+module.exports.OpenConnection = OpenConnection;
+module.exports.CloseConnection = CloseConnection;
+module.exports.InsertDocuments = InsertDocuments;
+module.exports.FindProducts = FindProducts;
+module.exports.AggregatesProducts = AggregatesProducts;
+
+//main();
+
+
+
+
 
