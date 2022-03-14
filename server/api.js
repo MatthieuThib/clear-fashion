@@ -16,6 +16,10 @@ app.options('*', cors());
 
 var products = "";
 
+app.get('/', (request, response) => {
+  response.send({'ack': true});
+})
+
 app.get('/products', async(request, response) => {
   products = await db.FindProducts()
 
@@ -24,8 +28,9 @@ app.get('/products', async(request, response) => {
 
 app.use('/products/search', async(request, response, next) => {
   const filters = request.query;
+  console.log(filters)
   var brand = "";
-  var defaultPrice = 0;
+  var defaultPrice = 50;
   var defaultLimit = 12;
 
   var query = []
@@ -44,17 +49,19 @@ app.use('/products/search', async(request, response, next) => {
     match.brand = brand 
   }
   
-  //console.log('filters: ', filters)
+  console.log('filters: ', filters)
   
   query.push({ $match : match})
   query.push({ $sort : { price : 1} })
   query.push({ $limit : defaultLimit })
 
-  //console.log('query :', query)
+  console.log('query :', query)
   
   products = await db.AggregatesProducts(query)
   
   response.send({"limit" : defaultLimit, "total" : products.length, "results" : products});
+
+  request.query = null;
 });
 
 app.get('/products/:id', async(request, response) => {
@@ -76,3 +83,4 @@ async function main(){
 
 main()
 
+// http://localhost:8092/products/search?brand=LA%20GENTLE%20FACTORY&limit=10&price=20
