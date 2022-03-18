@@ -17,18 +17,22 @@ app.options('*', cors());
 var products = "";
 
 app.get('/', (request, response) => {
-  response.send({'ack': true});
+  response.send({'ack': true, 'test' : true});
 })
 
-app.get('/products', async(request, response) => {
-  products = await db.FindProducts()
 
+app.get('/products', async(request, response) => {
+  await db.OpenConnection();
+  products = await db.FindProducts({})
   response.send({"total" : products.length, "results" : products});
 });
 
+
 app.use('/products/search', async(request, response, next) => {
+  await db.OpenConnection();
+
   const filters = request.query;
-  console.log(filters)
+  // default filters
   var brand = "";
   var defaultPrice = 50;
   var defaultLimit = 12;
@@ -36,10 +40,7 @@ app.use('/products/search', async(request, response, next) => {
   var query = []
   var match = {}
 
-  if(filters.limit > 0){
-    defaultLimit = parseInt(filters.limit)
-    //query.push({ $limit : defaultLimit })
-  }
+  if(filters.limit > 0) defaultLimit = parseInt(filters.limit)
   if(filters.price > 0){
     defaultPrice = parseInt(filters.price)
     match.price = { "$lte" : defaultPrice }
@@ -48,39 +49,30 @@ app.use('/products/search', async(request, response, next) => {
     brand = filters.brand.toUpperCase()
     match.brand = brand 
   }
-  
-  console.log('filters: ', filters)
-  
+
+  //build query
   query.push({ $match : match})
   query.push({ $sort : { price : 1} })
   query.push({ $limit : defaultLimit })
-
-  console.log('query :', query)
   
+  //get products
   products = await db.AggregatesProducts(query)
-  
   response.send({"limit" : defaultLimit, "total" : products.length, "results" : products});
 
+  //reset filters
   request.query = null;
+  brand = null;
+  defaultPrice = null;
+  defaultLimit = null;
+
 });
 
 app.get('/products/:id', async(request, response) => {
-  products = await db.FindProducts(
-    {'_id': new ObjectId(request.params.id)},
-    false);
-  response.send({"count" : products.length, "products" : products});
+  products = await db.FindProducts({'_id': new ObjectId(request.params.id)});
+  response.send({"total" : products.length, "products" : products});
 })
 
-async function main(){
-  await db.OpenConnection();
-
-  app.listen(PORT, (err) => {
-    if (err) console.error('❌ Unable to connect the server: ', err);
-    console.log(` 📡 Running on port ${PORT}`);
-  });
-  
-}
-
-main()
-
-// http://localhost:8092/products/search?brand=LA%20GENTLE%20FACTORY&limit=10&price=20
+app.listen(PORT, (err) => {
+  if (err) console.error('❌ Unable to connect the server: ', err);
+  console.log(` 📡 Running on port ${PORT}`);
+});
