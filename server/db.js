@@ -30,8 +30,6 @@ async function CloseConnection(client){
     console.log(" ⏹  Connection Closed\n\n");
 }
 
-
-
 async function InsertDocuments(collectionName = "products", documents = products){
 
     if(await db.listCollections({ name: db.collection.name }).toArray().length != 0){
@@ -103,16 +101,8 @@ function productsSortedByPrice(asc = true){
     return [ { $sort : { price : 1} } ]
 }
 
-
 module.exports.OpenConnection = OpenConnection;
 module.exports.CloseConnection = CloseConnection;
 module.exports.InsertDocuments = InsertDocuments;
 module.exports.FindProducts = FindProducts;
 module.exports.AggregatesProducts = AggregatesProducts;
-
-//main();
-
-
-
-
-
