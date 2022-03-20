@@ -31,7 +31,7 @@ app.get('/products', async(request, response) => {
 
   response.send(
     {
-      "sucess" : true, 
+      "success" : true, 
       "data" : {
         "result" : products, 
         "meta" : meta
