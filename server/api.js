@@ -1,5 +1,6 @@
 const cors = require('cors');
 const { application, query } = require('express');
+const { calculateLimitAndOffset, paginate } = require('paginate-info')
 const express = require('express');
 const helmet = require('helmet');
 const db = require ('./db')
@@ -24,7 +25,20 @@ app.get('/', (request, response) => {
 app.get('/products', async(request, response) => {
   await db.OpenConnection();
   products = await db.FindProducts({})
-  response.send({"total" : products.length, "results" : products});
+
+  const filters = request.query;
+  const meta = paginate(parseInt(filters.page), products.length, products, parseInt(filters.size))
+
+  response.send(
+    {
+      "sucess" : true, 
+      "data" : {
+        "result" : products, 
+        "meta" : meta
+      }
+    }
+  );
+  
 });
 
 
