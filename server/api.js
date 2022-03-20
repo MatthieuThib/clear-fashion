@@ -15,7 +15,6 @@ app.use(cors());
 app.use(helmet());
 app.options('*', cors());
 
-var products = "";
 
 app.get('/', (request, response) => {
   response.send({'ack': true, 'test' : true});
@@ -24,10 +23,12 @@ app.get('/', (request, response) => {
 
 app.get('/products', async(request, response) => {
   await db.OpenConnection();
-  products = await db.FindProducts({})
 
   const filters = request.query;
-  const meta = paginate(parseInt(filters.page), products.length, products, parseInt(filters.size))
+  const count = await db.EstimatedDocumentCount();
+  const { limit, offset } = calculateLimitAndOffset(parseInt(filters.page), parseInt(filters.size))
+  const products = await db.FindProducts({}, offset, limit, false);
+  const meta = paginate(parseInt(filters.page), count, products, parseInt(filters.size))
 
   response.send(
     {
