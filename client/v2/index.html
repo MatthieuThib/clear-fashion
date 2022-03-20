@@ -5,35 +5,39 @@
     <title>👕 Clear Fahion | Environmentally & human-friendly clothes</title>
     <link rel="stylesheet" href="style.css">
   </head>
-  <body>
+  <i>
+    
     <header>
-      <!--<h1>👕 Clear Fahion</h1>
-      <h2>Environmentally & human-friendly clothes</h2>-->
+      <h1 style="text-align: center;">👕 Clear Fahion</h1>
+      <h2 style="text-align: center;">Environmentally & human-friendly clothes</h2>
         
-<!-- qsdfgfxgchvjbknl,m;,knjhgjfhdxgsfxgchvjbknl,meta-->
-        <div class = "topnav" id="navbar">
+      
+      <div style = "float: left; width: 19%;"class = "topnav-l" id="navbar-l">
           
-          <li class="navbar-element"><a  href = "#"> Home</a></li>
-          <li class="navbar-element"><a  href = "#"> Men</a></li>
-          <li class="navbar-element"><a  href = "#"> Women</a></li>
-          <img class = "logo" src="./ressources/Logo.svg" alt = "logo">
-          <li class="navbar-element"><input type="text" placeholder=" Search ..."></li>
-          <li class="navbar-element"><a href = "#"> F</a></li>
-          <li class="navbar-element"><a href = "#"> D</a></li>
-          <li class="navbar-element"><a href = "#"> B</a></li>
+        <li class="navbar-element"><img id = "logotopnav" class = "logo" src="./ressources/Logo-gb.svg"></li>
 
-        </div>
+      </div>
+
+      <div style = "float: right; width: 80%;" class = "topnav" id="navbar"><li class="navbar-element"><a href = "#">🏠 Home</a></li>
+  
+        <li class="navbar-element"><input type="text" placeholder=" Search ..."></li>
+        <li class="navbar-element"><a href = "#" onclick = "ShowFav()" >🖤</a></li>
+        <li class="navbar-element"><a href = "#" onclick = "SwitchMode(['navbar','navbar-l', 'columnleft', 'columnright'])">🌙</a></li>
+        <li class="navbar-element"><a href = "#">🛒</a></li>
+
+      </div>
     </header>
 
     <div class="container">
+      <div class = "columnleft" id = "columnleft">
       <section id="options">
         <h2>Filters</h2>
         <div id="show">
           <label for="show-select">Show:</label>
           <select name="show" id="show-select">
-            <option value="12">12</option>
-            <option value="24">24</option>
-            <option value="48">48</option>
+            <option value="15">15</option>
+            <option value="30">30</option>
+            <option value="60">60</option>
           </select>
         </div>
         <div id="page">
@@ -71,6 +75,7 @@
           </div>
         </div>
       </section>
+    
       <section id="indicators">
         <h2>Indicators</h2>
         <div>
@@ -97,10 +102,19 @@
           <span>Last released date</span>
           <span id="lastDate">0</span>
         </div>
+        <h2>  </h2>
       </section>
+
+      </div>
+      <div class="columnright" id="columnright">
+        <h2> Products </h2>
+        <table text-align = "center" id="products">
+        </table>
+      </div> 
+      
     </div>
 
-    <section id="products"></section>
+
 
     
     <script type="text/javascript" charset="UTF-8" src="portfolio.js"></script>

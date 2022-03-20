@@ -2,73 +2,130 @@
 
 body {
   font-family: "Fira Sans Extra Condensed", sans-serif;
-  color: #ffffff;
-  background-color: rgb(16, 19, 22);
+  color: black;
+  background-color: rgb(212, 212, 212);
 }
 
-.logo {
-  height: 75px;
-  margin-top:4px;
-  padding-left: 50px;
-  padding-right: 50px;
-  vertical-align: middle;
-}
+h1 { font-style:normal;}
+
+
   
-.topnav {
-  background-color: rgb(0, 0, 0);
-  border-radius: 2px;
+.topnav, .topnav-l {
+  background-color:white;
+  border-radius: 5px;
   border: 2px solid;
-  border-color: rgb(48, 144, 72);
+  border-color: rgb(0, 0, 0);
   text-align: center;
-  width: 99%;
+  margin-bottom: 10px;
+  height:80px;
+}
+
+.topnav-dark, .topnav-l-dark{
+  background-color: rgb(16, 19, 22);
+  border-radius: 5px;
+  border: 2px solid;
+  border-color: rgb(255, 255, 255);
+  text-align: center;
+  margin-bottom: 10px;
+  height:80px;
 }
 
 .navbar-element {
   display: inline-block;
-  vertical-align: middle;
+  margin-right: 10px;
+  margin-top: 14px;
 }
 
 
-.topnav a {
-  color: #f2f2f2;
 
-  background-color: rgb(0, 0, 0);
+.topnav a, .topnav-dark a {
+  color: black;
+  background-color: rgb(201, 201, 201);
   padding: 10px 30px;
-  border-radius: 20px;
+  border-radius: 5px;
   border: 2px solid;
-  border-color: rgb(48, 144, 72);
-
+  border-color: black;
   font-size: 20px;
-  
+  text-decoration: none;
+  font-style: normal;
 }
 
+.topnav-dark a, .topnav-l-dark a {
+    color: white;
+    background-color: rgb(16, 19, 22);
+    padding: 10px 30px;
+    border-radius: 5px;
+    border: 2px solid;
+    border-color: rgb(255, 255, 255);
+    font-size: 20px;
+    text-decoration: none;
+    font-style: normal;
+  }
 
-
+/*
+h2{
+  font-size: 50px;
+}
+*/
 
   
 .topnav input {
-  color: rgb(255, 255, 255);
-  background-color: white;
-
-  padding: 10px 8px;
+  color: rgb(0, 0, 0);
+  padding: 10px 150px;
   font-size: 20px;
   text-align: left;
-
-
-  background-color: rgb(0, 0, 0);
-  padding: 10px 30px;
-  border-radius: 20px;
+  background-color: rgb(214, 214, 214);
+  border-radius: 5px;
   border: 2px solid;
-  border-color: rgb(48, 144, 72);
+  border-color: rgb(0, 0, 0);
+}
 
+.topnav-dark input {
+  color: white;
+  padding: 10px 150px;
+  font-size: 20px;
+  text-align: left;
+  background-color: rgb(16, 19, 22);
+  border-radius: 5px;
+  border: 2px solid;
+  border-color: white;
+}
+
+.logo {
+  height: 100px;
+  padding-left: 50px;
+  padding-right: 50px;
+  vertical-align: middle;
+
+  margin-top:-20px;
+  margin-bottom:-12px;
+  margin-left:0px;
 }
 
 /* The sticky class is added to the navbar with JS when it reaches its scroll position */
 .sticky {
   position: fixed;
-  top: 0;
-  width: 98%;
+  top: 2px;
+  right:0px;
+  width: 79.7%;
 }
+
+
+
+.stickyf {
+  position: fixed;
+  top: 100px;
+  width: 98px;
+  left: 0px;
+}
+
+.stickyl {
+  position: fixed;
+  top: 2px;
+  width: 98%;
+  left: 0px;
+}
+
 
 
 
@@ -83,7 +140,9 @@ body {
 }
 
 .ck-label label {
-  color: #ffffff;
+  color: black;
+  font-size: 30px;
+  font-weight: normal;
 }
 
 @keyframes heart {
@@ -97,17 +156,80 @@ input[type="checkbox"]:checked + label {
   animation: heart 1s cubic-bezier(0.17, 0.89, 0.32, 1.49);
 }
 
-#options {
-  width: 50%;
-  float: left;
-}
-#indicators {
-  width: 50%;
-  float: left;
-}
-#products {
-  margin: auto;
-  padding: 300px 0px 0px 0px;
-  /*background-color:white;*/
+.container { 
+  background-color: rgb(0, 0, 0);
   text-align: center;
+}
+
+.columnleft { 
+  float:left;
+  background-color:white;
+  float: left;
+  width: 19%;
+  border-radius: 5px;
+  border: 2px solid;
+  border-color: rgb(0, 0, 0);
+}
+
+.columnleft-dark { 
+  background-color:rgb(16, 19, 22);
+  float: left;
+  width: 19%;
+  border-radius: 5px;
+  border: 2px solid;
+  border-color: white;
+}
+
+.columnright { 
+
+  background-color:white;
+  float: right;
+  width: 80%;
+  border-radius: 5px;
+  border: 2px solid;
+  border-color: rgb(0, 0, 0);
+  
+}
+
+.columnright-dark { 
+
+  background-color:rgb(16, 19, 22);
+  float: right;
+  width: 80%;
+  border-radius: 5px;
+  border: 2px solid;
+  border-color: white;
+  
+}
+
+
+
+
+
+.dark-mode {
+  /*background-color: rgb(255, 255, 255);*/
+  background-color: black;
+  color: white;
+}
+
+
+.column1 { 
+  background-color:rgb(255, 255, 255);
+  float: left;
+  width: 33%;
+
+}
+
+.column1-dark { 
+  background-color: rgb(16, 19, 22);
+  float: left;
+  width: 33%;
+
+}
+
+.product-image { 
+  height:300px;
+  border-radius: 5px;
+  border: 2px solid;
+  border-color: rgb(0, 0, 255);
 }

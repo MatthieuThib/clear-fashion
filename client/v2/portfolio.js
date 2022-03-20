@@ -35,20 +35,38 @@ const checkboxFav = document.querySelector('#toggle-heart');
 // Test sticky navbar
 
 // When the user scrolls the page, execute myFunction 
-window.onscroll = function() {myFunction()};
+window.onscroll = function() {StickyNavbar(), StickyFilters()};
 
 // Get the navbar
 var navbar = document.getElementById("navbar");
+var navbarLogo = document.getElementById("navbar-l");
 
 // Get the offset position of the navbar
 var sticky = navbar.offsetTop;
 
 // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
-function myFunction() {
-  if (window.pageYOffset >= sticky) {
+function StickyNavbar() {
+  if (window.pageYOffset >= sticky - 10) {
     navbar.classList.add("sticky")
+    navbarLogo.classList.add("stickyl")
   } else {
     navbar.classList.remove("sticky");
+    navbarLogo.classList.remove("stickyl");
+  }
+}
+
+
+var columnleft = document.getElementById("columnleft");
+
+// Get the offset position of the navbar
+var sticky2 = columnleft.offsetTop;
+
+// Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+function StickyFilters() {
+  if (window.pageYOffset >= sticky2 - 110) {
+    columnleft.classList.add("stickyf")
+  } else {
+    columnleft.classList.remove("stickyf");
   }
 }
 
@@ -82,13 +100,18 @@ const setCurrentProducts = ({result, meta}) => {
 /**
  * Fetch products from api
  * @param  {Number}  [page=1] - current page to fetch
- * @param  {Number}  [size=12] - size of the page
+ * @param  {Number}  [size=15] - size of the page
  * @return {Object}
  */
-const fetchProducts = async (page = 1, size = 12) => {
+const fetchProducts = async (page = 1, size = 15) => {
   try {
+    /*
     const response = await fetch(
       `https://clear-fashion-api.vercel.app?page=${page}&size=${size}`
+    );*/
+  
+    const response = await fetch(
+      `https://clear-fashion-server-dusky.vercel.app/products?page=${page}&size=${size}`
     );
 
     const body = await response.json();
@@ -116,15 +139,21 @@ const renderProducts = products => {
   const template = products
     .map(product => {
       return `
-      <div class="product" id=${product.uuid}>
-        <span>${product.brand.toUpperCase()}</span>
-        <a href="${product.link}"target="_blank">${product.name}</a>
-        <span>${product.price}</span>
+      <div class="column1" id="column1">
+        <img class="product-image" src=${product.image}>
+        <div class="product-info">
 
-        <label class = "ck-label">
-          <input type="checkbox"  id="toggle-heart-${product.name}" onclick="checkFav('${product.uuid}')" />
-          <label for="toggle-heart-${product.name}">❤</label> 
-        </label>
+          <a style="font-size:20px;text-align:center;" href="${product.link}"target="_blank">${product.name}</a>
+            
+          <div class="product-price" style="margin-bottom:100px;">
+          <span style="font-size:30px;text-align:center;" >${product.brand.toUpperCase()} - </span>
+            <span style="font-size:30px;text-align:left;">${product.price} €  </span>     
+            <label class = "ck-label">
+              <input type="checkbox"  id="toggle-heart-${product.name}" onclick="checkFav('${product._id}')" />
+              <label for="toggle-heart-${product.name}">❤</label> 
+            </label>
+          </div>
+        </div> 
       </div>
     `;
     })
@@ -132,7 +161,7 @@ const renderProducts = products => {
 
   div.innerHTML = template;
   fragment.appendChild(div);
-  sectionProducts.innerHTML = '<h2>Products</h2>';
+  sectionProducts.innerHTML = '<h2> </h2>';
   sectionProducts.appendChild(fragment);
 };
 
@@ -376,7 +405,6 @@ const updateNbNewProducts = () => {
 // Feature 10 - p50, p90 and p95 price value indicator
 function pValue(products, p){
   let index = parseInt(products.length * p/100);
-  console.log(p, products.sort(sortByPrice)[index]);
   var pvalue = products.sort(sortByPrice)[index].price;
   return pvalue;
 }
@@ -422,9 +450,9 @@ const addFavFilterInSelectBox = () => {
   selectBox.options.add(new Option("On", "On", false));
 }
 
-function checkFav(uuid){
+function checkFav(_id){
   currentProducts.forEach(product => {
-    if(product.uuid === uuid && !favProducts.includes(product)){
+    if(product._id === _id && !favProducts.includes(product)){
       var p = product;
       p.fav = true;
       favProducts.push(p);
@@ -432,10 +460,10 @@ function checkFav(uuid){
   })
 }
 
-function isFavorite(uuid, favProducts){
+function isFavorite(_id, favProducts){
   let boolean = false;
   favProducts.forEach(product => {
-    if(product.uuid === uuid){
+    if(product._id === _id){
       return true;
     }
   })
@@ -443,8 +471,51 @@ function isFavorite(uuid, favProducts){
 // Feature 15 - Usable and pleasant UX
 //style.css
 
+/*
+function SwitchMode() {
+  var element = document.body;
+  element.classList.toggle("dark-mode");
+
+  const logo = document.querySelector('#logotopnav');
+  if(logo.src.match("./ressources/Logo-gb.svg")) logo.src = "./ressources/Logo-gw.svg"
+  else logo.src = "./ressources/Logo-gb.svg"
+
+  const navbar = document.querySelector('#navbar');
+  if(navbar.className === "topnav") navbar.className = "topnav-dark"
+  else navbar.className = "topnav"
+}*/
+
+function SwitchMode(idElementsToToggle) {
+  const logo = document.querySelector('#logotopnav');
+  if(logo.src.match("./ressources/Logo-gb.svg")) logo.src = "./ressources/Logo-gw.svg"
+  else logo.src = "./ressources/Logo-gb.svg"
+
+  var element = document.body;
+  element.classList.toggle("dark-mode");
+  
+  document.querySelectorAll('#column1').forEach((element) => {
+    if(element.className.slice(-5) === "-dark") element.className = element.className.slice(0,-5)
+    else element.className = element.className + "-dark"
+  })
 
 
+  idElementsToToggle.forEach(idElement => { 
+    element = document.querySelector('#'+idElement);
+    if(element.className.slice(-5) === "-dark") element.className = element.className.slice(0,-5)
+    else element.className = element.className + "-dark"
+    console.log(element.className)
+  })
+}
+
+
+
+
+function ShowFav() { 
+  currentProducts = favProducts;
+  
+  conosle.log(favProducts);
+  render();
+}
 
 
 
