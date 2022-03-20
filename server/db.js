@@ -30,6 +30,11 @@ async function CloseConnection(client){
     console.log(" ⏹  Connection Closed\n\n");
 }
 
+async function EstimatedDocumentCount(){
+    return await db.collection("products").estimatedDocumentCount();
+}
+
+
 async function InsertDocuments(collectionName = "products", documents = products){
 
     if(await db.listCollections({ name: db.collection.name }).toArray().length != 0){
@@ -45,9 +50,12 @@ async function InsertDocuments(collectionName = "products", documents = products
     await collection.insertMany(documents);
 }
 
-async function FindProducts(query = {}, printResults = false) {
+async function FindProducts(query = {}, offset = 0, limit = 0, printResults = false) {
     if(connected == true){
-        const result = await db.collection("products").find(query).toArray()
+        const result = await db.collection("products").find(query)
+                                                      .skip(offset)
+                                                      .limit(limit)
+                                                      .toArray()
 
         if(printResults){
             console.log(' 🧐 Find:', query);
@@ -65,19 +73,24 @@ async function AggregatesProducts(query = [{}], printResults = false) {
         if(printResults){
             console.log(' 🧐  Aggregate:', query);
             console.log(` 📄  ${result.length} documents found:`);
-            await result.forEach(doc => console.log(doc));
+            await result.forEach(doc => console.log(doc))
+            
+            
         }
+        
 
         return result;
     }
 }
 
 
+
 async function main(){
-    await OpenConnection(MONGODB_URI, MONGODB_DB_NAME);
+    await OpenConnection(URI, DB_NAME);
 
     if(connected){
-        await FindProducts({}, true);
+        var result = await FindProducts({}, offset = 126, limit = 12, false);
+        console.log(result.length)
         await CloseConnection(client);
     }
 }
@@ -103,6 +116,7 @@ function productsSortedByPrice(asc = true){
 
 module.exports.OpenConnection = OpenConnection;
 module.exports.CloseConnection = CloseConnection;
+module.exports.EstimatedDocumentCount = EstimatedDocumentCount;
 module.exports.InsertDocuments = InsertDocuments;
 module.exports.FindProducts = FindProducts;
 module.exports.AggregatesProducts = AggregatesProducts;
