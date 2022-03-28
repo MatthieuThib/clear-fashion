@@ -105,15 +105,8 @@ const setCurrentProducts = ({result, meta}) => {
  */
 const fetchProducts = async (page = 1, size = 15) => {
   try {
-    /*
-    const response = await fetch(
-      `https://clear-fashion-api.vercel.app?page=${page}&size=${size}`
-    );*/
   
-    const response = await fetch(
-      `https://clear-fashion-server-dusky.vercel.app/products?page=${page}&size=${size}`
-    );
-
+    const response = await fetch(`https://clear-fashion-matthieu-api.vercel.app/products?page=${page}&size=${size}`);
     const body = await response.json();
 
     if (body.success !== true) {
