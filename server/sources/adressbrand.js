@@ -24,13 +24,13 @@ const parse = data => {
 
       const image = $(element)
         .find('.product_img_link')
-        .attr('href');
+        .children()
+        .attr('data-original');
 
       const link = $(element)
         .find('.product_img_link')
-        .children()
-        .attr('data-original');
-        
+        .attr('href');
+
       const brand = 'ADRESSE';
       const favorite = false;
 
