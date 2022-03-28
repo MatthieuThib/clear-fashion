@@ -46,8 +46,9 @@ async function InsertDocuments(collectionName = "products", documents = products
 
     console.log(` 🐣 Inserting ${documents.length} documents in ${collectionName}.`);
 
+    documents = documents.sort((a, b) => 0.5 - Math.random());
     const collection = await db.collection(collectionName);
-    await collection.insertMany(documents);
+    await collection.insertMany(documents, { ordered: false });
 }
 
 async function FindProducts(query = {}, offset = 0, limit = 0, printResults = false) {
@@ -113,6 +114,17 @@ function productsSortedByPrice(asc = true){
     }
     return [ { $sort : { price : 1} } ]
 }
+
+async function Main(){
+    await OpenConnection(URI, DB_NAME);
+
+    if(connected){
+        await InsertDocuments();
+        await CloseConnection(client);
+    }
+}
+
+Main();
 
 module.exports.OpenConnection = OpenConnection;
 module.exports.CloseConnection = CloseConnection;
