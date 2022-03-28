@@ -23,6 +23,7 @@ function saveAsJson (products){
   fs.writeFileSync('products/products.json', json);
 }
 
+
 async function browseMontlimart (urlMontlimart, numberOfPages = 8){
   var products = [];
 
@@ -128,6 +129,7 @@ async function sandbox (eshop = 'all'){
 
     if(eshop === 'all'){
       products = await browseAll();
+      console.log(products[0]);
     }
 
     else if(eshop.includes('dedicated')){
@@ -158,12 +160,18 @@ async function sandbox (eshop = 'all'){
       products = await browseGentleFactory(urlgentlefactory)
     }
 
-    saveAsJson(products);
+    products = products.filter(product => product.name !== undefined && product.name !== null
+                                       && product.price !== undefined && product.price !== null
+                                       && product.image !== undefined && product.image !== null
+                                       && product.link !== undefined && product.link !== null
+                                       && product.brand !== undefined && product.brand !== null);
+    
 
-    // console.log('🔍  Scrapped Products:')
-    // console.log(products);
+    console.log('🔍  Scrapped Products:')
+    console.log(products);
     console.log(products.length)
 
+    saveAsJson(products);
     console.log('✅  Done');
 
     process.exit(0);
