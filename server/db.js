@@ -84,18 +84,6 @@ async function AggregatesProducts(query = [{}], printResults = false) {
     }
 }
 
-
-
-async function main(){
-    await OpenConnection(URI, DB_NAME);
-
-    if(connected){
-        var result = await FindProducts({}, offset = 126, limit = 12, false);
-        console.log(result.length)
-        await CloseConnection(client);
-    }
-}
-
 function productsFromBrand(brand){
     return { brand: `${brand.toUpperCase()}` }
 }
@@ -114,17 +102,6 @@ function productsSortedByPrice(asc = true){
     }
     return [ { $sort : { price : 1} } ]
 }
-
-async function Main(){
-    await OpenConnection(URI, DB_NAME);
-
-    if(connected){
-        await InsertDocuments();
-        await CloseConnection(client);
-    }
-}
-
-Main();
 
 module.exports.OpenConnection = OpenConnection;
 module.exports.CloseConnection = CloseConnection;
