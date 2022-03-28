@@ -16,7 +16,6 @@ var sort = 'No';
 const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
 const selectBrand = document.querySelector('#brand-select');
-const selectRecentProducts = document.querySelector('#recentProducts-select');
 const selectReasonablePrice = document.querySelector('#reasonablePrice-select');
 const selectFav = document.querySelector('#fav-select');
 const selectSort = document.querySelector('#sort-select');
@@ -28,23 +27,22 @@ const spanNbNewProducts = document.querySelector('#nbNewProducts');
 const spanp50 = document.querySelector('#p50');
 const spanp90 = document.querySelector('#p90');
 const spanp95 = document.querySelector('#p95');
-const spanLastDate = document.querySelector('#lastDate');
 
 const checkboxFav = document.querySelector('#toggle-heart');
 
-// Test sticky navbar
-
-// When the user scrolls the page, execute myFunction 
+// When the user scrolls, fix the navbar to the top of the page and the filters on the left
 window.onscroll = function() {StickyNavbar(), StickyFilters()};
 
 // Get the navbar
 var navbar = document.getElementById("navbar");
 var navbarLogo = document.getElementById("navbar-l");
 
+var columnleft = document.getElementById("columnleft");
+
 // Get the offset position of the navbar
 var sticky = navbar.offsetTop;
+var sticky2 = columnleft.offsetTop;
 
-// Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
 function StickyNavbar() {
   if (window.pageYOffset >= sticky - 10) {
     navbar.classList.add("sticky")
@@ -55,13 +53,6 @@ function StickyNavbar() {
   }
 }
 
-
-var columnleft = document.getElementById("columnleft");
-
-// Get the offset position of the navbar
-var sticky2 = columnleft.offsetTop;
-
-// Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
 function StickyFilters() {
   if (window.pageYOffset >= sticky2 - 110) {
     columnleft.classList.add("stickyf")
@@ -69,23 +60,6 @@ function StickyFilters() {
     columnleft.classList.remove("stickyf");
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * Set global value
@@ -209,12 +183,10 @@ selectShow.addEventListener('change', event => {
     .then(setCurrentProducts)
     .then(() => addBrandsInSelectBox(getDisplayedBrands()))
     .then(() => { if (brand !== 'All') {currentProducts = currentProducts.filter(element => element.brand === brand)} })
-    .then(() => { if(filterRecentProducts === 'On') { currentProducts = currentProducts.filter(element => (new Date().getTime() - new Date(element.released).getTime())/(24*60*60*1000) < 14)} })
     .then(() => { if(filterReasonablePrice === 'On') { currentProducts = currentProducts.filter(element => element.price < 50)} })
     .then(() => { if (sort === 'price-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price < e2.price}) }
              else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
-             else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
-             else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
+             })
     .then(() => { if(fav === 'On') { currentProducts = favProducts} })
     .then(() => render(currentProducts, currentPagination))
     .then(() => updateIndicators());
@@ -227,12 +199,10 @@ selectPage.addEventListener('change', event => {
     .then(setCurrentProducts)
     .then(() => addBrandsInSelectBox(getDisplayedBrands()))
     .then(() => { if (brand !== 'All') {currentProducts = currentProducts.filter(element => element.brand === brand)} })
-    .then(() => { if(filterRecentProducts === 'On') { currentProducts = currentProducts.filter(element => (new Date().getTime() - new Date(element.released).getTime())/(24*60*60*1000) < 14)} })
+    
     .then(() => { if(filterReasonablePrice === 'On') { currentProducts = currentProducts.filter(element => element.price < 50)} })
     .then(() => { if (sort === 'price-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price < e2.price}) }
-             else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
-             else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
-             else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
+             else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }})
     .then(() => { if(fav === 'On') { currentProducts = favProducts} })
     .then(() => render(currentProducts, currentPagination))
     .then(() => updateIndicators());
@@ -245,30 +215,11 @@ selectBrand.addEventListener('change', event => {
     .then(setCurrentProducts)
     .then(() => addBrandsInSelectBox(getDisplayedBrands()))
     .then(() => { if (brand !== 'All') {currentProducts = currentProducts.filter(element => element.brand === brand)} })
-    .then(() => { if(filterRecentProducts === 'On') { currentProducts = currentProducts.filter(element => (new Date().getTime() - new Date(element.released).getTime())/(24*60*60*1000) < 14)} })
+    
     .then(() => { if(filterReasonablePrice === 'On') { currentProducts = currentProducts.filter(element => element.price < 50)} })
     .then(() => { if (sort === 'price-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price < e2.price}) }
              else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
-             else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
-             else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
-    .then(() => { if(fav === 'On') { currentProducts = favProducts} })
-    .then(() => render(currentProducts, currentPagination))
-    .then(() => updateIndicators());
-});
- 
-// SELECT RECENTLY RELEASED PRODUCTS 
-selectRecentProducts.addEventListener('change', event => {
-  var filterRecentProducts = event.target.value;
-  fetchProducts(currentPagination.currentPage, currentPagination.pageSize)
-    .then(setCurrentProducts)
-    .then(() => addBrandsInSelectBox(getDisplayedBrands()))
-    .then(() => { if (brand !== 'All') {currentProducts = currentProducts.filter(element => element.brand === brand)} })
-    .then(() => { if(filterRecentProducts === 'On') { currentProducts = currentProducts.filter(element => (new Date().getTime() - new Date(element.released).getTime())/(24*60*60*1000) < 14)} })
-    .then(() => { if(filterReasonablePrice === 'On') { currentProducts = currentProducts.filter(element => element.price < 50)} })
-    .then(() => { if (sort === 'price-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price < e2.price}) }
-             else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
-             else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
-             else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
+             })
     .then(() => { if(fav === 'On') { currentProducts = favProducts} })
     .then(() => render(currentProducts, currentPagination))
     .then(() => updateIndicators());
@@ -281,12 +232,11 @@ selectReasonablePrice.addEventListener('change', event => {
     .then(setCurrentProducts)
     .then(() => addBrandsInSelectBox(getDisplayedBrands()))
     .then(() => { if (brand !== 'All') {currentProducts = currentProducts.filter(element => element.brand === brand)} })
-    .then(() => { if(filterRecentProducts === 'On') { currentProducts = currentProducts.filter(element => (new Date().getTime() - new Date(element.released).getTime())/(24*60*60*1000) < 14)} })
+    
     .then(() => { if(filterReasonablePrice === 'On') { currentProducts = currentProducts.filter(element => element.price < 50)} })
     .then(() => { if (sort === 'price-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price < e2.price}) }
              else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
-             else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
-             else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
+             })
     .then(() => { if(fav === 'On') { currentProducts = favProducts} })
     .then(() => render(currentProducts, currentPagination))
     .then(() => updateIndicators());
@@ -299,12 +249,11 @@ selectFav.addEventListener('change', event => {
     .then(setCurrentProducts)
     .then(() => addBrandsInSelectBox(getDisplayedBrands()))
     .then(() => { if (brand !== 'All') {currentProducts = currentProducts.filter(element => element.brand === brand)} })
-    .then(() => { if(filterRecentProducts === 'On') { currentProducts = currentProducts.filter(element => (new Date().getTime() - new Date(element.released).getTime())/(24*60*60*1000) < 14)} })
+    
     .then(() => { if(filterReasonablePrice === 'On') { currentProducts = currentProducts.filter(element => element.price < 50)} })
     .then(() => { if (sort === 'price-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price < e2.price}) }
              else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
-             else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
-             else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
+             })
     .then(() => { if(fav === 'On') { currentProducts = favProducts} })
     .then(() => render(currentProducts, currentPagination))
     .then(() => updateIndicators());
@@ -317,12 +266,11 @@ selectSort.addEventListener('change', event => {
     .then(setCurrentProducts)
     .then(() => addBrandsInSelectBox(getDisplayedBrands()))
     .then(() => { if (brand !== 'All') {currentProducts = currentProducts.filter(element => element.brand === brand)} })
-    .then(() => { if(filterRecentProducts === 'On') { currentProducts = currentProducts.filter(element => (new Date().getTime() - new Date(element.released).getTime())/(24*60*60*1000) < 14)} })
+    
     .then(() => { if(filterReasonablePrice === 'On') { currentProducts = currentProducts.filter(element => element.price < 50)} })
     .then(() => { if (sort === 'price-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price < e2.price}) }
              else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
-             else if (sort === 'date-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() < new Date(e2.released).getTime()}) }
-             else if (sort === 'date-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return new Date(e1.released).getTime() > new Date(e2.released).getTime()}) }})
+             })
     .then(() => { if(fav === 'On') { currentProducts = favProducts} })
     .then(() => render(currentProducts, currentPagination))
     .then(() => updateIndicators());
@@ -410,17 +358,6 @@ const updatePValues = () => {
   spanp50.innerHTML = pValue(currentProducts, 50);
   spanp90.innerHTML = pValue(currentProducts, 90);
   spanp95.innerHTML = pValue(currentProducts, 95);
-}
-
-// Feature 11 - Last released date indicator
-function sortByDate(a, b){
-  return new Date(a.date).getDate() - new Date(b.date).getDate();
-}
-function lastProductReleasedDate(products){
-  return products.sort(sortByDate)[0].released
-}
-const updateLastReleasedProductDate = () => {
-  spanLastDate.innerHTML = lastProductReleasedDate(currentProducts);
 }
 
 const updateIndicators = () => {
