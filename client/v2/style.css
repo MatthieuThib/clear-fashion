@@ -30,6 +30,15 @@ h1 { font-style:normal;}
   height:80px;
 }
 
+.topnav :hover ,
+.topnav-dark :hover {
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+}
+
+
+
+
 .navbar-element {
   display: inline-block;
   margin-right: 10px;
