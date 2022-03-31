@@ -20,8 +20,8 @@
 
       <div style = "float: right; width: 80%;" class = "topnav" id="navbar"><li class="navbar-element"><a href = "#">🏠 Home</a></li>
   
-        <li class="navbar-element"><input type="text" placeholder=" Search ..."></li>
-        <li class="navbar-element"><a href = "#" onclick = "ShowFav()" >🖤</a></li>
+        <li class="navbar-element"><input id= "searchbar" type="text" placeholder=" Search ..."></li>
+        <li class="navbar-element"><a href = "#" id = "favButton" >🖤</a></li>
         <li class="navbar-element"><a href = "#" onclick = "SwitchMode(['navbar','navbar-l', 'columnleft', 'columnright'])">🌙</a></li>
         <li class="navbar-element"><a href = "#">🛒</a></li>
 
@@ -66,8 +66,6 @@
               <option value="No" selected>No</option>
               <option value="price-asc">Cheaper</option>
               <option value="price-desc">Expensive</option>
-              <option value="date-asc">Recently released</option>
-              <option value="date-desc">Anciently released</option>
             </select>
           </div>
         </div>
@@ -100,12 +98,7 @@
         <table text-align = "center" id="products">
         </table>
       </div> 
-      
     </div>
-
-
-
-    
     <script type="text/javascript" charset="UTF-8" src="portfolio.js"></script>
   </body>
 </html>

@@ -18,17 +18,18 @@ const selectPage = document.querySelector('#page-select');
 const selectBrand = document.querySelector('#brand-select');
 const selectReasonablePrice = document.querySelector('#reasonablePrice-select');
 const selectFav = document.querySelector('#fav-select');
+const favButton = document.querySelector('#favButton');
 const selectSort = document.querySelector('#sort-select');
 const sectionProducts = document.querySelector('#products');
 
 // Indicators
 const spanNbProducts = document.querySelector('#nbProducts');
-const spanNbNewProducts = document.querySelector('#nbNewProducts');
 const spanp50 = document.querySelector('#p50');
 const spanp90 = document.querySelector('#p90');
 const spanp95 = document.querySelector('#p95');
 
 const checkboxFav = document.querySelector('#toggle-heart');
+
 
 // When the user scrolls, fix the navbar to the top of the page and the filters on the left
 window.onscroll = function() {StickyNavbar(), StickyFilters()};
@@ -67,6 +68,7 @@ function StickyFilters() {
  * @param {Object} meta - pagination meta info
  */
 const setCurrentProducts = ({result, meta}) => {
+  console.log("result", result)
   currentProducts = result;
   currentPagination = meta;
 };
@@ -259,6 +261,38 @@ selectFav.addEventListener('change', event => {
     .then(() => updateIndicators());
 });
 
+
+
+
+
+
+var showfav = false;
+favButton.addEventListener('click', event => {
+  if(showfav){
+    showfav = false;
+  }
+  else{
+    showfav = true;
+  }
+
+  console.log(showfav);
+  fetchProducts(currentPagination.currentPage, currentPagination.pageSize)
+    .then(setCurrentProducts)
+    .then(() => addBrandsInSelectBox(getDisplayedBrands()))
+    .then(() => { if (brand !== 'All') {currentProducts = currentProducts.filter(element => element.brand === brand)} })
+    
+    .then(() => { if(filterReasonablePrice === 'On') { currentProducts = currentProducts.filter(element => element.price < 50)} })
+    .then(() => { if (sort === 'price-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price < e2.price}) }
+             else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
+             })
+    .then(() => { if(showfav == true) { currentProducts = favProducts; console.log(currentProducts)} })
+    .then(() => render(currentProducts, currentPagination))
+    .then(() => updateIndicators());
+  
+});
+
+
+
 // SELECT SORT FILTER
 selectSort.addEventListener('change', event => {
   var sort = event.target.value;
@@ -276,21 +310,57 @@ selectSort.addEventListener('change', event => {
     .then(() => updateIndicators());
 });
 
+
+
+
+
+
+
+const searchbar = document.querySelector('#searchbar')
+searchbar.addEventListener("input", e => {
+  let value = e.target.value
+
+  // When at least 2 chars are entered, we search for products.
+  if (value && value.trim().length > 1){
+    fetchProducts(1,3000)
+    .then(setCurrentProducts)
+    .then(() => value = value.trim().toLowerCase())
+    .then(() => currentProducts = currentProducts.filter(element => element.name.toLowerCase().includes(value)))
+    .then(() => render(currentProducts, currentPagination))
+    .then(() => updateIndicators());
+  }
+  
+  else{
+    fetchProducts(currentPagination.currentPage, currentPagination.pageSize)
+    .then(setCurrentProducts)
+    .then(() => addBrandsInSelectBox(getDisplayedBrands()))
+    .then(() => { if (brand !== 'All') {currentProducts = currentProducts.filter(element => element.brand === brand)} })
+    
+    .then(() => { if(filterReasonablePrice === 'On') { currentProducts = currentProducts.filter(element => element.price < 50)} })
+    .then(() => { if (sort === 'price-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price < e2.price}) }
+             else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
+             })
+    .then(() => { if(fav === 'On') { currentProducts = favProducts} })
+    .then(() => render(currentProducts, currentPagination))
+    .then(() => updateIndicators());
+  }
+});
+
+
+
+
+
 document.addEventListener('DOMContentLoaded', () =>
   fetchProducts()
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination))
     .then(() => addBrandsInSelectBox(getDisplayedBrands())) 
-    .then(() => addRecentlyReleasedFilterInSelectBox())
     .then(() => addResonablePriceFilterInSelectBox())
     .then(() => addFavFilterInSelectBox())
 );
 
 
-// Feature 1 - Browse pages
-
-// Feature 2 - Filter by brands
-
+// Filter by brands
 // get brands currently displayed
 // return list of that brands
 const getDisplayedBrands = () => {
@@ -311,39 +381,25 @@ const addBrandsInSelectBox = (brands) => {
 
 }
 
-//Feature 3 - Filter by recent products
-const addRecentlyReleasedFilterInSelectBox = () => {
+// Filter by reasonable price
+const addResonablePriceFilterInSelectBox = () => {
   var selectBox = document.getElementById('reasonablePrice-select');
   selectBox.options.length = 0;
   selectBox.options.add(new Option("Off", "Off", true));
   selectBox.options.add(new Option("On", "On", false));
 }
 
-//Feature 4 - Filter by reasonable price
-const addResonablePriceFilterInSelectBox = () => {
-  var selectBox = document.getElementById('recentProducts-select');
-  selectBox.options.length = 0;
-  selectBox.options.add(new Option("Off", "Off", true));
-  selectBox.options.add(new Option("On", "On", false));
-}
-
-//Feature 5 - Sort by price
-//Feature 6 - Sort by date
-
-//Feature 8 - Number of products indicator
+// Number of products indicator
 const updateNbProducts = () => {
   spanNbProducts.innerHTML = currentProducts.length;
 }
 
-//Feature 9 - Number of recent products indicator
+// Number of recent products indicator
 function isRecent(p){
   return (new Date().getTime() - new Date(p.released).getTime())/(24*60*60*1000) < 14;
 }
-const updateNbNewProducts = () => {
-  spanNbNewProducts.innerHTML = currentProducts.filter(isRecent).length;
-}
 
-// Feature 10 - p50, p90 and p95 price value indicator
+// p-Values (p50, p90 and p95)
 function pValue(products, p){
   let index = parseInt(products.length * p/100);
   var pvalue = products.sort(sortByPrice)[index].price;
@@ -354,7 +410,6 @@ function sortByPrice(a, b){
 }
 
 const updatePValues = () => {
-  console.log(pValue(currentProducts, 50));
   spanp50.innerHTML = pValue(currentProducts, 50);
   spanp90.innerHTML = pValue(currentProducts, 90);
   spanp95.innerHTML = pValue(currentProducts, 95);
@@ -362,17 +417,10 @@ const updatePValues = () => {
 
 const updateIndicators = () => {
   updateNbProducts();
-  updateNbNewProducts();
   updatePValues();
-  updateLastReleasedProductDate();
 }
 
-// Feature 12 - Open product link
-// add target="_blank" in render products href link
-
-// Feature 13 - Save as favorite
-
-// Feature 14 - Filter by favorite
+// Filter by favorite
 const addFavFilterInSelectBox = () => {
   var selectBox = document.getElementById('fav-select');
   selectBox.options.length = 0;
@@ -391,29 +439,12 @@ function checkFav(_id){
 }
 
 function isFavorite(_id, favProducts){
-  let boolean = false;
   favProducts.forEach(product => {
     if(product._id === _id){
       return true;
     }
   })
 }
-// Feature 15 - Usable and pleasant UX
-//style.css
-
-/*
-function SwitchMode() {
-  var element = document.body;
-  element.classList.toggle("dark-mode");
-
-  const logo = document.querySelector('#logotopnav');
-  if(logo.src.match("./ressources/Logo-gb.svg")) logo.src = "./ressources/Logo-gw.svg"
-  else logo.src = "./ressources/Logo-gb.svg"
-
-  const navbar = document.querySelector('#navbar');
-  if(navbar.className === "topnav") navbar.className = "topnav-dark"
-  else navbar.className = "topnav"
-}*/
 
 function SwitchMode(idElementsToToggle) {
   const logo = document.querySelector('#logotopnav');
@@ -436,21 +467,3 @@ function SwitchMode(idElementsToToggle) {
     console.log(element.className)
   })
 }
-
-
-
-
-function ShowFav() { 
-  currentProducts = favProducts;
-  
-  conosle.log(favProducts);
-  render();
-}
-
-
-
-
-
-
-
-
