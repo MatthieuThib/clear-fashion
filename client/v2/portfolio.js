@@ -68,7 +68,6 @@ function StickyFilters() {
  * @param {Object} meta - pagination meta info
  */
 const setCurrentProducts = ({result, meta}) => {
-  console.log("result", result)
   currentProducts = result;
   currentPagination = meta;
 };
@@ -274,8 +273,7 @@ favButton.addEventListener('click', event => {
   else{
     showfav = true;
   }
-
-  console.log(showfav);
+  
   fetchProducts(currentPagination.currentPage, currentPagination.pageSize)
     .then(setCurrentProducts)
     .then(() => addBrandsInSelectBox(getDisplayedBrands()))
@@ -285,7 +283,7 @@ favButton.addEventListener('click', event => {
     .then(() => { if (sort === 'price-desc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price < e2.price}) }
              else if (sort === 'price-asc') {currentProducts = currentProducts.sort( (e1, e2) => { return e1.price > e2.price}) }
              })
-    .then(() => { if(showfav == true) { currentProducts = favProducts; console.log(currentProducts)} })
+    .then(() => { if(showfav == true) { currentProducts = favProducts} })
     .then(() => render(currentProducts, currentPagination))
     .then(() => updateIndicators());
   
@@ -464,6 +462,5 @@ function SwitchMode(idElementsToToggle) {
     element = document.querySelector('#'+idElement);
     if(element.className.slice(-5) === "-dark") element.className = element.className.slice(0,-5)
     else element.className = element.className + "-dark"
-    console.log(element.className)
   })
 }
